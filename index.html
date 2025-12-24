@@ -1,286 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <title>Valerio CV Chat</title>
+  <title>V.E.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&display=swap" rel="stylesheet">
 
-  <style>
-    /* Light mode (default variables) */
-    :root {
-      --bg: #f0f2f5;
-      --panel: rgba(255,255,255,0.85);
-      --text: #1f2937;
-      --text-light: #6b7280;
-      --primary: #2563eb;
-      --radius: 18px;
-      --transition: 0.3s ease;
-    }
-
-    /* Dark mode overrides */
-    body.dark {
-      --bg: #0f1115;
-      --panel: rgba(24,26,31,0.85);
-      --text: #e5e7eb;
-      --text-light: #9ca3af;
-      --primary: #3b82f6;
-    }
-
-    body {
-      margin: 0;
-      font-family: "General Sans", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: linear-gradient(135deg,#f9fafb,#e5e7eb);
-      transition: background var(--transition), color var(--transition);
-    }
-
-    body.dark {
-      background: linear-gradient(135deg,#111827,#1f2937);
-    }
-
-    .container {
-      width: min(900px, 100%);
-      height: 90vh;
-      background: var(--panel);
-      border-radius: var(--radius);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-      backdrop-filter: blur(12px);
-      transition: background var(--transition), box-shadow var(--transition);
-    }
-
-    header {
-      padding: 16px 20px;
-      font-weight: 600;
-      font-size: 18px;
-      background: transparent;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .theme-toggle {
-      cursor: pointer;
-      font-size: 16px;
-      padding: 6px 10px;
-      border-radius: var(--radius);
-      background: rgba(255,255,255,0.4);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      transition: var(--transition);
-    }
-
-    body.dark .theme-toggle {
-      background: rgba(31,41,55,0.6);
-    }
-
-    .chat {
-      flex: 1;
-      overflow-y: auto;
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      scroll-behavior: smooth;
-    }
-
-    .msg {
-      max-width: 75%;
-      padding: 14px 16px;
-      border-radius: var(--radius);
-      line-height: 1.55;
-      font-size: 15px;
-      animation: fadeBounce 0.35s ease;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-      transition: background var(--transition), color var(--transition);
-    }
-
-    @keyframes fadeBounce {
-      0% { opacity: 0; transform: scale(0.95) translateY(6px); }
-      60% { opacity: 1; transform: scale(1.02) translateY(-2px); }
-      100% { transform: scale(1) translateY(0); }
-    }
-
-    .msg.user {
-      align-self: flex-end;
-      background: var(--primary);
-      color: white;
-    }
-
-    .msg.ai {
-      align-self: flex-start;
-      background: var(--panel);
-    }
-
-    .onboarding {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 20px;
-      text-align: center;
-      animation: fadeIn 0.6s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .avatar-large {
-      width: clamp(140px, 20vw, 220px);
-      height: clamp(140px, 20vw, 220px);
-      border-radius: 50%;
-      overflow: hidden;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
-      transition: var(--transition);
-    }
-
-    .avatar-large img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .greeting {
-      font-size: 18px;
-      font-weight: 500;
-      color: var(--text-light);
-    }
-
-    .tips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: center;
-    }
-
-    .tip {
-      padding: 10px 14px;
-      background: var(--panel);
-      border-radius: var(--radius);
-      font-size: 14px;
-      cursor: pointer;
-      transition: var(--transition);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    .tip:hover {
-      background: var(--primary);
-      color: white;
-      transform: translateY(-2px);
-    }
-
-    .composer {
-      padding: 16px;
-      display: flex;
-      gap: 12px;
-      background: transparent;
-    }
-
-    textarea {
-      flex: 1;
-      resize: none;
-      border: none;
-      border-radius: var(--radius);
-      padding: 12px 14px;
-      font-size: 15px;
-      outline: none;
-      background: var(--panel);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      transition: background var(--transition), color var(--transition);
-    }
-
-    button {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 0 22px;
-      border-radius: var(--radius);
-      font-size: 15px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: var(--transition);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-    }
-
-    button:hover {
-      background: #1d4ed8;
-    }
-
-    .typing-indicator {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 10px 14px;
-      background: var(--panel);
-      border-radius: var(--radius);
-      width: fit-content;
-      animation: fadeIn 0.25s ease;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    .typing-dot {
-      width: 6px;
-      height: 6px;
-      background: #9ca3af;
-      border-radius: 50%;
-      animation: typingBounce 1.4s infinite ease-in-out;
-    }
-
-    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-    @keyframes typingBounce {
-      0%, 60%, 100% { transform: translateY(0); opacity: 0.6; }
-      30% { transform: translateY(-4px); opacity: 1; }
-    }
-
-    .avatar-small {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      overflow: hidden;
-      margin-right: 8px;
-      flex-shrink: 0;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-    }
-
-    .thought {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      animation: fadeBounce 0.35s ease;
-    }
-  </style>
+  <!-- Collega il tuo file CSS -->
+  <link rel="stylesheet" href="styles.css">
 </head>
+
 <body class="dark">
   <div class="container">
     <header>
-      Valerio CV Chat
+      V.E.R.A. (Valerio’s Enhanced Resume Assistant)
       <div class="theme-toggle" id="themeToggle">🌓</div>
     </header>
-        <div id="chat" class="chat">
+    <div id="chat" class="chat">
       <!-- Onboarding -->
       <div id="onboarding" class="onboarding">
         <div class="avatar-large" id="avatarLarge">
-          <img src="avatar.png" alt="Avatar">
+          <img src="images/avatar.png" alt="Avatar">
         </div>
-        <div class="greeting">Hi there 👋, ask me anything about my creator!</div>
+        <div class="greeting">Hi there 👋, I’m V.E.R.A.
+          I can help you explore Valerio’s experience, skills, and career.
+          Write your question below, or pick one of the suggestions.</div>
         <div class="tips">
-          <div class="tip">Where did Valerio study?</div>
-          <div class="tip">Where does he work now?</div>
-          <div class="tip">What are his skills?</div>
-          <div class="tip">What experience does he have?</div>
+          <div class="tip">Tell me about Valerio?</div>
+          <div class="tip">What is Valerio’s work experience?</div>
+          <div class="tip">Has Valerio published anything?</div>
+          <div class="tip">What is Valerio’s education?</div>
+          <div class="tip">How can I reach Valerio?</div>
         </div>
       </div>
     </div>
@@ -293,7 +45,7 @@
 
   <script>
     const API_URL = "https://api.langbase.com/v1/pipes/run";
-    const API_KEY = "PIPE_API_KEY_HERE"; // <-- Inserisci la tua chiave pipe_...
+    const API_KEY = "pipe_2S364v23EnPqhSUWnffRqynzqyDaN7hejk1V8pn5Eizn1iB96k4BW8gqwZS5ooJ494HLs22D7icHdBp3NbXXpWwS";
 
     const chat = document.getElementById("chat");
     const input = document.getElementById("input");
@@ -303,6 +55,37 @@
 
     let controller = null;
     const messages = [];
+
+    // ⭐ Tutte le suggestions disponibili (ordine completo)
+    const allSuggestions = [
+      "Tell me about Valerio?",
+      "What is Valerio’s work experience?",
+      "Has Valerio published anything?",
+      "What is Valerio’s education?",
+      "How can I reach Valerio?"
+    ];
+
+    // ⭐ Le prime 3 visibili
+    let visibleSuggestions = allSuggestions.slice(0, 3);
+
+    // ⭐ Le rimanenti da mostrare dopo
+    let remainingSuggestions = allSuggestions.slice(3);
+
+    function renderSuggestions() {
+      const tipsContainer = document.createElement("div");
+      tipsContainer.className = "tips";
+
+      visibleSuggestions.forEach(s => {
+        const tip = document.createElement("div");
+        tip.className = "tip";
+        tip.textContent = s;
+        tip.onclick = () => handleQuestion(s);
+        tipsContainer.appendChild(tip);
+      });
+
+      chat.appendChild(tipsContainer);
+      chat.scrollTop = chat.scrollHeight;
+    }
 
     function addMessage(role, text) {
       const div = document.createElement("div");
@@ -317,10 +100,10 @@
       const wrapper = document.createElement("div");
       wrapper.className = "typing-indicator";
       wrapper.innerHTML = `
-        <div class="typing-dot"></div>
-        <div class="typing-dot"></div>
-        <div class="typing-dot"></div>
-      `;
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    `;
       chat.appendChild(wrapper);
       chat.scrollTop = chat.scrollHeight;
       return wrapper;
@@ -332,7 +115,7 @@
 
       const avatarSmall = document.createElement("div");
       avatarSmall.className = "avatar-small";
-      avatarSmall.innerHTML = `<img src="avatar.png" alt="Avatar" style="width:100%;height:100%;object-fit:cover;">`;
+      avatarSmall.innerHTML = `<img src="images/avatar.png" alt="Avatar" style="width:100%;height:100%;object-fit:cover;">`;
 
       const bubble = document.createElement("div");
       bubble.className = "msg ai";
@@ -348,9 +131,21 @@
 
     async function handleQuestion(text) {
       if (!text) return;
+
       if (onboarding) onboarding.remove();
 
-      // La domanda è solo un messaggio utente
+      // ⭐ Rimuovi la suggestion selezionata
+      const index = visibleSuggestions.indexOf(text);
+      if (index !== -1) {
+        visibleSuggestions.splice(index, 1);
+
+        // ⭐ Se ci sono altre suggestions rimanenti → aggiungine una
+        if (remainingSuggestions.length > 0) {
+          const next = remainingSuggestions.shift();
+          visibleSuggestions.push(next);
+        }
+      }
+
       addMessage("user", text);
 
       const typingBubble = showTyping();
@@ -408,6 +203,11 @@
 
         messages.push({ role: "assistant", content: full });
 
+        // ⭐ Dopo la risposta → mostra le suggestions rimanenti
+        if (visibleSuggestions.length > 0) {
+          renderSuggestions();
+        }
+
       } catch (err) {
         typingBubble.remove();
         addAiResponse("Please contact my creator");
@@ -440,10 +240,10 @@
       });
     });
 
-    // Toggle Dark Mode
     themeToggle.onclick = () => {
       document.body.classList.toggle("dark");
     };
   </script>
 </body>
+
 </html>
