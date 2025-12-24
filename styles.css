@@ -413,69 +413,11 @@ button:hover {
 }
 
 /****************************************************
- * RESPONSIVE FIX — Mobile ottimizzato
+ * MOBILE: mostra solo 3 suggerimenti
  ****************************************************/
 @media (max-width: 600px) {
-
-    /* Riduce leggermente il font globale */
-    body {
-        font-size: 15px;
-    }
-
-    /* Container più compatto e senza tagli */
-    .container {
-        width: 95%;
-        height: 88vh; /* prima 95vh → troppo */
-        top: 52%;
-        transform: translate(-50%, -52%);
-    }
-
-    /* Chat più equilibrata */
-    .chat {
-        padding: 14px;
-        gap: 14px;
-    }
-
-    /* Textarea più visibile e meno schiacciata */
-    .composer {
-        padding: 10px;
-        gap: 10px;
-    }
-
-    textarea {
-        font-size: 15px;
-        padding: 10px 12px;
-    }
-
-    button {
-        padding: 0 16px;
-        font-size: 15px;
-    }
-
-    /* Avatar onboarding più piccolo */
-    .avatar-large {
-        width: 140px;
-        height: 140px;
-    }
-
-    /* Background meno zoomato e centrato meglio */
-    body::before {
-        background-size: contain; /* prima cover → tagliava troppo */
-        background-position: center;
-        background-attachment: scroll;
-    }
-}
-
-/****************************************************
- * RESPONSIVE FIX — Tablet
- ****************************************************/
-@media (max-width: 900px) {
-    body::before {
-        background-position: center right;
-        background-size: cover;
-    }
-
-    .container {
-        height: 85vh;
+    .tips .tip:nth-child(4),
+    .tips .tip:nth-child(5) {
+        display: none;
     }
 }
