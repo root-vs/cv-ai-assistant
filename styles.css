@@ -204,12 +204,15 @@ body.dark .theme-toggle {
     flex-direction: column;
     gap: 18px;
     scroll-behavior: smooth;
-    scrollbar-width: none;      /* Firefox */
-    -ms-overflow-style: none;   /* Internet Explorer / Edge Legacy */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* Internet Explorer / Edge Legacy */
 }
 
 .chat::-webkit-scrollbar {
-    display: none;              /* Chrome, Safari, Edge */
+    display: none;
+    /* Chrome, Safari, Edge */
 }
 
 /****************************************************
@@ -413,11 +416,40 @@ button:hover {
 }
 
 /****************************************************
- * MOBILE: mostra solo 3 suggerimenti
+ * MOBILE FIX — Alza avatar e contenuto
  ****************************************************/
 @media (max-width: 600px) {
-    .tips .tip:nth-child(4),
-    .tips .tip:nth-child(5) {
-        display: none;
+
+    /* Sposta la container più in alto */
+    .container {
+        top: 44%;
+        /* prima 50% → troppo basso */
+        transform: translate(-50%, -44%);
+        height: 88vh;
+        /* evita che esca dallo schermo */
+    }
+
+    /* Riduce lo spazio verticale dell’onboarding */
+    .onboarding {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        gap: 14px;
+    }
+
+    /* Avatar più piccolo per lasciare più spazio sopra */
+    .avatar-large {
+        width: 110px;
+        height: 110px;
+    }
+
+    /* Riduce padding della chat per guadagnare spazio */
+    .chat {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    /* Riduce padding della composer per non spingere tutto giù */
+    .composer {
+        padding: 8px;
     }
 }
