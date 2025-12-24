@@ -1,0 +1,16 @@
+image: node:18
+
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  script:
+    - npm install
+  environment:
+    name: production
+  artifacts:
+    paths:
+      - api/
+      - index.html
+      - styles.css
