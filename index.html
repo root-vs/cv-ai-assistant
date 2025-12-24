@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Valerio CV Chat</title>
@@ -8,15 +9,24 @@
   <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&display=swap" rel="stylesheet">
 
   <style>
+    /* Light mode (default variables) */
     :root {
-      --bg: #f7f8fa;
-      --panel: #ffffff;
-      --border: #e5e7eb;
+      --bg: #f0f2f5;
+      --panel: rgba(255, 255, 255, 0.85);
       --text: #1f2937;
       --text-light: #6b7280;
       --primary: #2563eb;
-      --radius: 14px;
+      --radius: 18px;
       --transition: 0.3s ease;
+    }
+
+    /* Dark mode overrides */
+    body.dark {
+      --bg: #0f1115;
+      --panel: rgba(24, 26, 31, 0.85);
+      --text: #e5e7eb;
+      --text-light: #9ca3af;
+      --primary: #3b82f6;
     }
 
     body {
@@ -28,25 +38,49 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      background: linear-gradient(135deg, #f9fafb, #e5e7eb);
+      transition: background var(--transition), color var(--transition);
+    }
+
+    body.dark {
+      background: linear-gradient(135deg, #111827, #1f2937);
     }
 
     .container {
       width: min(900px, 100%);
       height: 90vh;
       background: var(--panel);
-      border: 1px solid var(--border);
       border-radius: var(--radius);
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(12px);
+      transition: background var(--transition), box-shadow var(--transition);
     }
 
     header {
       padding: 16px 20px;
-      border-bottom: 1px solid var(--border);
       font-weight: 600;
       font-size: 18px;
+      background: transparent;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .theme-toggle {
+      cursor: pointer;
+      font-size: 16px;
+      padding: 6px 10px;
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition: var(--transition);
+    }
+
+    body.dark .theme-toggle {
+      background: rgba(31, 41, 55, 0.6);
     }
 
     .chat {
@@ -66,12 +100,24 @@
       line-height: 1.55;
       font-size: 15px;
       animation: fadeBounce 0.35s ease;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+      transition: background var(--transition), color var(--transition);
     }
 
     @keyframes fadeBounce {
-      0% { opacity: 0; transform: scale(0.95) translateY(6px); }
-      60% { opacity: 1; transform: scale(1.02) translateY(-2px); }
-      100% { transform: scale(1) translateY(0); }
+      0% {
+        opacity: 0;
+        transform: scale(0.95) translateY(6px);
+      }
+
+      60% {
+        opacity: 1;
+        transform: scale(1.02) translateY(-2px);
+      }
+
+      100% {
+        transform: scale(1) translateY(0);
+      }
     }
 
     .msg.user {
@@ -82,11 +128,9 @@
 
     .msg.ai {
       align-self: flex-start;
-      background: #f3f4f6;
-      border: 1px solid var(--border);
+      background: var(--panel);
     }
 
-    /* Onboarding */
     .onboarding {
       flex: 1;
       display: flex;
@@ -99,16 +143,23 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .avatar-large {
-      width: 120px;
-      height: 120px;
+      width: clamp(140px, 20vw, 220px);
+      height: clamp(140px, 20vw, 220px);
       border-radius: 50%;
       overflow: hidden;
-      border: 3px solid var(--border);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
       transition: var(--transition);
     }
 
@@ -134,11 +185,11 @@
     .tip {
       padding: 10px 14px;
       background: var(--panel);
-      border: 1px solid var(--border);
       border-radius: var(--radius);
       font-size: 14px;
       cursor: pointer;
       transition: var(--transition);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
     .tip:hover {
@@ -147,24 +198,24 @@
       transform: translateY(-2px);
     }
 
-    /* Composer */
     .composer {
       padding: 16px;
-      border-top: 1px solid var(--border);
       display: flex;
       gap: 12px;
+      background: transparent;
     }
 
     textarea {
       flex: 1;
       resize: none;
-      border: 1px solid var(--border);
+      border: none;
       border-radius: var(--radius);
       padding: 12px 14px;
       font-size: 15px;
       outline: none;
-      background: white;
-      height: 48px;
+      background: var(--panel);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition: background var(--transition), color var(--transition);
     }
 
     button {
@@ -177,23 +228,23 @@
       font-weight: 500;
       cursor: pointer;
       transition: var(--transition);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
     }
 
     button:hover {
       background: #1d4ed8;
     }
 
-    /* Typing iMessage style */
     .typing-indicator {
       display: inline-flex;
       align-items: center;
       gap: 4px;
       padding: 10px 14px;
-      background: #e5e7eb;
+      background: var(--panel);
       border-radius: var(--radius);
-      border: 1px solid var(--border);
       width: fit-content;
       animation: fadeIn 0.25s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
     .typing-dot {
@@ -204,23 +255,37 @@
       animation: typingBounce 1.4s infinite ease-in-out;
     }
 
-    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-    @keyframes typingBounce {
-      0%, 60%, 100% { transform: translateY(0); opacity: 0.6; }
-      30% { transform: translateY(-4px); opacity: 1; }
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.2s;
     }
 
-    /* Avatar small in chat */
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typingBounce {
+
+      0%,
+      60%,
+      100% {
+        transform: translateY(0);
+        opacity: 0.6;
+      }
+
+      30% {
+        transform: translateY(-4px);
+        opacity: 1;
+      }
+    }
+
     .avatar-small {
       width: 40px;
       height: 40px;
       border-radius: 50%;
       overflow: hidden;
-      border: 2px solid var(--border);
       margin-right: 8px;
       flex-shrink: 0;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
     }
 
     .thought {
@@ -231,10 +296,13 @@
     }
   </style>
 </head>
-<body>
-  <div class="container">
-    <header>Valerio CV Chat</header>
 
+<body class="dark">
+  <div class="container">
+    <header>
+      Valerio CV Chat
+      <div class="theme-toggle" id="themeToggle">🌓</div>
+    </header>
     <div id="chat" class="chat">
       <!-- Onboarding -->
       <div id="onboarding" class="onboarding">
@@ -259,12 +327,13 @@
 
   <script>
     const API_URL = "https://api.langbase.com/v1/pipes/run";
-    const API_KEY = "pipe_2S364v23EnPqhSUWnffRqynzqyDaN7hejk1V8pn5Eizn1iB96k4BW8gqwZS5ooJ494HLs22D7icHdBp3NbXXpWwS"; // <-- Inserisci la tua chiave pipe_...
+    const API_KEY = "PIPE_API_KEY_HERE"; // <-- Inserisci la tua chiave pipe_...
 
     const chat = document.getElementById("chat");
     const input = document.getElementById("input");
     const sendBtn = document.getElementById("send");
     const onboarding = document.getElementById("onboarding");
+    const themeToggle = document.getElementById("themeToggle");
 
     let controller = null;
     const messages = [];
@@ -286,7 +355,7 @@
         <div class="typing-dot"></div>
         <div class="typing-dot"></div>
       `;
-           chat.appendChild(wrapper);
+      chat.appendChild(wrapper);
       chat.scrollTop = chat.scrollHeight;
       return wrapper;
     }
@@ -375,7 +444,7 @@
 
       } catch (err) {
         typingBubble.remove();
-        addAiResponse("Error fetching response from Langbase.");
+        addAiResponse("Please contact my creator");
       }
     }
 
@@ -404,6 +473,12 @@
         handleQuestion(tip.textContent);
       });
     });
+
+    // Toggle Dark Mode
+    themeToggle.onclick = () => {
+      document.body.classList.toggle("dark");
+    };
   </script>
 </body>
+
 </html>
