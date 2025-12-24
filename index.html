@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <title>Chat • Langbase Pipe</title>
+  <title>Langbase Chat • Valerio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Font professionale -->
@@ -18,6 +18,30 @@
       --primary: #2563eb;
       --primary-light: #dbeafe;
       --radius: 14px;
+      --transition: 0.25s ease;
+    }
+
+    /* DARK MODE */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f1115;
+        --panel: #181a1f;
+        --border: #2a2d33;
+        --text: #e5e7eb;
+        --text-light: #9ca3af;
+        --primary: #3b82f6;
+        --primary-light: #1e3a8a;
+      }
+    }
+
+    body.dark {
+      --bg: #0f1115;
+      --panel: #181a1f;
+      --border: #2a2d33;
+      --text: #e5e7eb;
+      --text-light: #9ca3af;
+      --primary: #3b82f6;
+      --primary-light: #1e3a8a;
     }
 
     * {
@@ -34,6 +58,7 @@
       justify-content: center;
       padding: 24px;
       height: 100vh;
+      transition: background var(--transition), color var(--transition);
     }
 
     .container {
@@ -45,6 +70,7 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      transition: background var(--transition), border var(--transition);
     }
 
     header {
@@ -53,8 +79,9 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #ffffffcc;
+      background: var(--panel);
       backdrop-filter: blur(12px);
+      transition: var(--transition);
     }
 
     header h1 {
@@ -62,7 +89,7 @@
       font-weight: 600;
     }
 
-    header .status {
+    .status {
       font-size: 13px;
       color: var(--text-light);
       display: flex;
@@ -70,13 +97,27 @@
       gap: 6px;
     }
 
-    header .dot {
+    .dot {
       width: 8px;
       height: 8px;
       background: #22c55e;
       border-radius: 50%;
     }
 
+    .theme-toggle {
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      font-size: 13px;
+      transition: var(--transition);
+    }
+
+    .theme-toggle:hover {
+      background: var(--border);
+    }
+
+    /* CHAT */
     .chat {
       flex: 1;
       overflow-y: auto;
@@ -84,6 +125,7 @@
       display: flex;
       flex-direction: column;
       gap: 18px;
+      scroll-behavior: smooth;
     }
 
     .msg {
@@ -92,6 +134,13 @@
       border-radius: var(--radius);
       line-height: 1.55;
       font-size: 15px;
+      animation: msgBounce 0.25s ease;
+    }
+
+    @keyframes msgBounce {
+      0% { transform: scale(0.97); }
+      60% { transform: scale(1.02); }
+      100% { transform: scale(1); }
     }
 
     .msg.user {
@@ -106,13 +155,66 @@
       border: 1px solid var(--border);
     }
 
+    body.dark .msg.ai {
+      background: #1f2126;
+    }
+
+    /* ONBOARDING */
+    .onboarding {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 12px;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .tips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .tip {
+      padding: 10px 14px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 14px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .tip:hover {
+      background: var(--primary-light);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    /* COMPOSER */
     .composer {
       padding: 16px;
       border-top: 1px solid var(--border);
-      background: #ffffffcc;
-      backdrop-filter: blur(12px);
+      background: var(--panel);
       display: flex;
       gap: 12px;
+      transition: var(--transition);
     }
 
     textarea {
@@ -126,10 +228,12 @@
       background: white;
       height: 48px;
       max-height: 140px;
+      transition: var(--transition);
     }
 
-    textarea::placeholder {
-      color: var(--text-light);
+    body.dark textarea {
+      background: #0f1115;
+      color: var(--text);
     }
 
     button {
@@ -141,7 +245,7 @@
       font-size: 15px;
       font-weight: 500;
       cursor: pointer;
-      transition: 0.15s ease;
+      transition: var(--transition);
     }
 
     button:hover {
@@ -162,27 +266,73 @@
       display: block;
     }
 
-    .typing {
-      opacity: 0.6;
-      font-size: 14px;
+    /* Typing iMessage style */
+    .typing-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 10px 14px;
+      background: #e5e7eb;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      width: fit-content;
+      animation: fadeIn 0.25s ease;
     }
+
+    body.dark .typing-indicator {
+      background: #1f2126;
+    }
+
+    .typing-dot {
+      width: 6px;
+      height: 6px;
+      background: #9ca3af;
+      border-radius: 50%;
+      animation: typingBounce 1.4s infinite ease-in-out;
+    }
+
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typingBounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.6; }
+      30% { transform: translateY(-4px); opacity: 1; }
+    }
+
   </style>
 </head>
 
 <body>
   <div class="container">
     <header>
-      <h1>Langbase Chat</h1>
+      <h1>Chat CV • Valerio</h1>
       <div class="status">
         <div class="dot"></div>
         Pipe attivo
       </div>
+      <div class="theme-toggle" id="themeToggle">🌓</div>
     </header>
 
     <div id="chat" class="chat">
-      <div class="msg ai">
-        Ciao Valerio, sono pronto. Scrivi pure la tua domanda.
+
+      <!-- ONBOARDING -->
+      <div id="onboarding" class="onboarding">
+        <div class="avatar">
+          <img src="avatar.png" alt="Avatar">
+        </div>
+
+        <div class="tips">
+          <div class="tip">Dove ha studiato Valerio?</div>
+          <div class="tip">Dove lavora attualmente?</div>
+          <div class="tip">Quali competenze ha?</div>
+          <div class="tip">Che esperienza ha nel settore?</div>
+        </div>
       </div>
+
     </div>
 
     <div class="composer">
@@ -200,6 +350,8 @@
     const input = document.getElementById("input");
     const sendBtn = document.getElementById("send");
     const stopBtn = document.getElementById("stop");
+    const onboarding = document.getElementById("onboarding");
+    const themeToggle = document.getElementById("themeToggle");
 
     let controller = null;
     const messages = [];
@@ -213,15 +365,33 @@
       return div;
     }
 
-    async function sendMessage() {
-      const text = input.value.trim();
+    function hideOnboarding() {
+      if (onboarding) onboarding.remove();
+    }
+
+    function showTyping() {
+      const wrapper = document.createElement("div");
+      wrapper.className = "typing-indicator";
+
+      wrapper.innerHTML = `
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      `;
+
+      chat.appendChild(wrapper);
+      chat.scrollTop = chat.scrollHeight;
+      return wrapper;
+    }
+
+    async function sendMessage(text) {
       if (!text) return;
 
+      hideOnboarding();
       addMessage("user", text);
       input.value = "";
 
-      const aiMsg = addMessage("ai", "…");
-      aiMsg.classList.add("typing");
+      const typingBubble = showTyping();
 
       sendBtn.disabled = true;
       stopBtn.classList.add("visible");
@@ -247,6 +417,9 @@
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
         let full = "";
+
+        typingBubble.remove();
+        const aiMsg = addMessage("ai", "");
 
         while (true) {
           const { done, value } = await reader.read();
@@ -276,11 +449,10 @@
           }
         }
 
-        aiMsg.classList.remove("typing");
         messages.push({ role: "assistant", content: full });
 
       } catch (err) {
-        aiMsg.textContent = "Errore durante la risposta.";
+        addMessage("ai", "Errore durante la risposta.");
       }
 
       sendBtn.disabled = false;
@@ -288,7 +460,13 @@
       controller = null;
     }
 
-    sendBtn.onclick = sendMessage;
+    sendBtn.onclick = () => sendMessage(input.value.trim());
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage(input.value.trim());
+      }
+    });
 
     stopBtn.onclick = () => {
       if (controller) controller.abort();
@@ -296,12 +474,17 @@
       sendBtn.disabled = false;
     };
 
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
-      }
+    // CLICK SUI TIP
+    document.querySelectorAll(".tip").forEach(tip => {
+      tip.addEventListener("click", () => {
+        sendMessage(tip.textContent);
+      });
     });
+
+    // DARK MODE SWITCH
+    themeToggle.onclick = () => {
+      document.body.classList.toggle("dark");
+    };
   </script>
 </body>
 </html>
