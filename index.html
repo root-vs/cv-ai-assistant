@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Langbase Chat • Valerio</title>
+  <title>Valerio CV Chat</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Font professionale -->
   <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&display=swap" rel="stylesheet">
 
   <style>
@@ -16,108 +15,40 @@
       --text: #1f2937;
       --text-light: #6b7280;
       --primary: #2563eb;
-      --primary-light: #dbeafe;
       --radius: 14px;
-      --transition: 0.25s ease;
-    }
-
-    /* DARK MODE */
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0f1115;
-        --panel: #181a1f;
-        --border: #2a2d33;
-        --text: #e5e7eb;
-        --text-light: #9ca3af;
-        --primary: #3b82f6;
-        --primary-light: #1e3a8a;
-      }
-    }
-
-    body.dark {
-      --bg: #0f1115;
-      --panel: #181a1f;
-      --border: #2a2d33;
-      --text: #e5e7eb;
-      --text-light: #9ca3af;
-      --primary: #3b82f6;
-      --primary-light: #1e3a8a;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "General Sans", sans-serif;
+      --transition: 0.3s ease;
     }
 
     body {
+      margin: 0;
+      font-family: "General Sans", sans-serif;
       background: var(--bg);
       color: var(--text);
       display: flex;
       justify-content: center;
-      padding: 24px;
+      align-items: center;
       height: 100vh;
-      transition: background var(--transition), color var(--transition);
     }
 
     .container {
       width: min(900px, 100%);
-      height: 100%;
+      height: 90vh;
       background: var(--panel);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      transition: background var(--transition), border var(--transition);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
     }
 
     header {
-      padding: 18px 22px;
+      padding: 16px 20px;
       border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: var(--panel);
-      backdrop-filter: blur(12px);
-      transition: var(--transition);
-    }
-
-    header h1 {
-      font-size: 18px;
       font-weight: 600;
+      font-size: 18px;
     }
 
-    .status {
-      font-size: 13px;
-      color: var(--text-light);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      background: #22c55e;
-      border-radius: 50%;
-    }
-
-    .theme-toggle {
-      cursor: pointer;
-      padding: 6px 10px;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      font-size: 13px;
-      transition: var(--transition);
-    }
-
-    .theme-toggle:hover {
-      background: var(--border);
-    }
-
-    /* CHAT */
     .chat {
       flex: 1;
       overflow-y: auto;
@@ -134,13 +65,13 @@
       border-radius: var(--radius);
       line-height: 1.55;
       font-size: 15px;
-      animation: msgBounce 0.25s ease;
+      animation: fadeBounce 0.35s ease;
     }
 
-    @keyframes msgBounce {
-      0% { transform: scale(0.97); }
-      60% { transform: scale(1.02); }
-      100% { transform: scale(1); }
+    @keyframes fadeBounce {
+      0% { opacity: 0; transform: scale(0.95) translateY(6px); }
+      60% { opacity: 1; transform: scale(1.02) translateY(-2px); }
+      100% { transform: scale(1) translateY(0); }
     }
 
     .msg.user {
@@ -155,39 +86,48 @@
       border: 1px solid var(--border);
     }
 
-    body.dark .msg.ai {
-      background: #1f2126;
-    }
-
-    /* ONBOARDING */
+    /* Onboarding */
     .onboarding {
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 18px;
-      margin-bottom: 12px;
-      animation: fadeIn 0.4s ease;
+      justify-content: center;
+      gap: 20px;
+      text-align: center;
+      animation: fadeIn 0.6s ease;
     }
 
-    .avatar {
-      width: 90px;
-      height: 90px;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .avatar-large {
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       overflow: hidden;
-      border: 2px solid var(--border);
+      border: 3px solid var(--border);
       transition: var(--transition);
     }
 
-    .avatar img {
+    .avatar-large img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
 
+    .greeting {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text-light);
+    }
+
     .tips {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 12px;
       justify-content: center;
     }
 
@@ -202,19 +142,17 @@
     }
 
     .tip:hover {
-      background: var(--primary-light);
+      background: var(--primary);
       color: white;
       transform: translateY(-2px);
     }
 
-    /* COMPOSER */
+    /* Composer */
     .composer {
       padding: 16px;
       border-top: 1px solid var(--border);
-      background: var(--panel);
       display: flex;
       gap: 12px;
-      transition: var(--transition);
     }
 
     textarea {
@@ -227,13 +165,6 @@
       outline: none;
       background: white;
       height: 48px;
-      max-height: 140px;
-      transition: var(--transition);
-    }
-
-    body.dark textarea {
-      background: #0f1115;
-      color: var(--text);
     }
 
     button {
@@ -252,20 +183,6 @@
       background: #1d4ed8;
     }
 
-    button:disabled {
-      opacity: 0.6;
-      cursor: wait;
-    }
-
-    .stop-btn {
-      background: #ef4444;
-      display: none;
-    }
-
-    .stop-btn.visible {
-      display: block;
-    }
-
     /* Typing iMessage style */
     .typing-indicator {
       display: inline-flex;
@@ -279,10 +196,6 @@
       animation: fadeIn 0.25s ease;
     }
 
-    body.dark .typing-indicator {
-      background: #1f2126;
-    }
-
     .typing-dot {
       width: 6px;
       height: 6px;
@@ -291,67 +204,67 @@
       animation: typingBounce 1.4s infinite ease-in-out;
     }
 
-    .typing-dot:nth-child(2) {
-      animation-delay: 0.2s;
-    }
-    .typing-dot:nth-child(3) {
-      animation-delay: 0.4s;
-    }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
 
     @keyframes typingBounce {
       0%, 60%, 100% { transform: translateY(0); opacity: 0.6; }
       30% { transform: translateY(-4px); opacity: 1; }
     }
 
+    /* Avatar small in chat */
+    .avatar-small {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--border);
+      margin-right: 8px;
+      flex-shrink: 0;
+    }
+
+    .thought {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      animation: fadeBounce 0.35s ease;
+    }
   </style>
 </head>
-
 <body>
   <div class="container">
-    <header>
-      <h1>Chat CV • Valerio</h1>
-      <div class="status">
-        <div class="dot"></div>
-        Pipe attivo
-      </div>
-      <div class="theme-toggle" id="themeToggle">🌓</div>
-    </header>
+    <header>Valerio CV Chat</header>
 
     <div id="chat" class="chat">
-
-      <!-- ONBOARDING -->
+      <!-- Onboarding -->
       <div id="onboarding" class="onboarding">
-        <div class="avatar">
+        <div class="avatar-large" id="avatarLarge">
           <img src="avatar.png" alt="Avatar">
         </div>
-
+        <div class="greeting">Hi there 👋, ask me anything about my creator!</div>
         <div class="tips">
-          <div class="tip">Dove ha studiato Valerio?</div>
-          <div class="tip">Dove lavora attualmente?</div>
-          <div class="tip">Quali competenze ha?</div>
-          <div class="tip">Che esperienza ha nel settore?</div>
+          <div class="tip">Where did Valerio study?</div>
+          <div class="tip">Where does he work now?</div>
+          <div class="tip">What are his skills?</div>
+          <div class="tip">What experience does he have?</div>
         </div>
       </div>
-
     </div>
 
     <div class="composer">
-      <textarea id="input" placeholder="Scrivi un messaggio..."></textarea>
-      <button id="send">Invia</button>
-      <button id="stop" class="stop-btn">Stop</button>
+      <textarea id="input" placeholder="Write a question..."></textarea>
+      <button id="send">Send</button>
     </div>
   </div>
 
   <script>
     const API_URL = "https://api.langbase.com/v1/pipes/run";
-    const API_KEY = "pipe_2S364v23EnPqhSUWnffRqynzqyDaN7hejk1V8pn5Eizn1iB96k4BW8gqwZS5ooJ494HLs22D7icHdBp3NbXXpWwS";
+    const API_KEY = "pipe_2S364v23EnPqhSUWnffRqynzqyDaN7hejk1V8pn5Eizn1iB96k4BW8gqwZS5ooJ494HLs22D7icHdBp3NbXXpWwS"; // <-- Inserisci la tua chiave pipe_...
 
     const chat = document.getElementById("chat");
     const input = document.getElementById("input");
     const sendBtn = document.getElementById("send");
-    const stopBtn = document.getElementById("stop");
     const onboarding = document.getElementById("onboarding");
-    const themeToggle = document.getElementById("themeToggle");
 
     let controller = null;
     const messages = [];
@@ -365,39 +278,50 @@
       return div;
     }
 
-    function hideOnboarding() {
-      if (onboarding) onboarding.remove();
-    }
-
     function showTyping() {
       const wrapper = document.createElement("div");
       wrapper.className = "typing-indicator";
-
       wrapper.innerHTML = `
         <div class="typing-dot"></div>
-        <div class="typing-dot"></div>
-        <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
       `;
-
       chat.appendChild(wrapper);
       chat.scrollTop = chat.scrollHeight;
       return wrapper;
     }
 
-    async function sendMessage(text) {
+    function moveAvatarToChat(questionText) {
+      // Rimuovi onboarding
+      if (onboarding) onboarding.remove();
+
+      // Crea riga con avatar piccolo + nuvoletta
+      const thoughtRow = document.createElement("div");
+      thoughtRow.className = "thought";
+
+      const avatarSmall = document.createElement("div");
+      avatarSmall.className = "avatar-small";
+      avatarSmall.innerHTML = `<img src="avatar.png" alt="Avatar" style="width:100%;height:100%;object-fit:cover;">`;
+
+      const bubble = document.createElement("div");
+      bubble.className = "msg ai";
+      bubble.textContent = questionText;
+
+      thoughtRow.appendChild(avatarSmall);
+      thoughtRow.appendChild(bubble);
+
+      chat.appendChild(thoughtRow);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    async function handleQuestion(text) {
       if (!text) return;
-
-      hideOnboarding();
+      moveAvatarToChat(text);
       addMessage("user", text);
-      input.value = "";
 
+      // Mostra typing
       const typingBubble = showTyping();
 
-      sendBtn.disabled = true;
-      stopBtn.classList.add("visible");
-
       messages.push({ role: "user", content: text });
-
       controller = new AbortController();
 
       try {
@@ -413,6 +337,10 @@
           }),
           signal: controller.signal
         });
+
+        if (!response.ok || !response.body) {
+          throw new Error("Errore API Langbase");
+        }
 
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
@@ -452,39 +380,36 @@
         messages.push({ role: "assistant", content: full });
 
       } catch (err) {
-        addMessage("ai", "Errore durante la risposta.");
+        typingBubble.remove();
+        addMessage("ai", "Error fetching response from Langbase.");
       }
-
-      sendBtn.disabled = false;
-      stopBtn.classList.remove("visible");
-      controller = null;
     }
 
-    sendBtn.onclick = () => sendMessage(input.value.trim());
+    // Eventi
+    sendBtn.onclick = () => {
+      const text = input.value.trim();
+      if (text) {
+        handleQuestion(text);
+        input.value = "";
+      }
+    };
+
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
-        sendMessage(input.value.trim());
+        const text = input.value.trim();
+        if (text) {
+          handleQuestion(text);
+          input.value = "";
+        }
       }
     });
 
-    stopBtn.onclick = () => {
-      if (controller) controller.abort();
-      stopBtn.classList.remove("visible");
-      sendBtn.disabled = false;
-    };
-
-    // CLICK SUI TIP
     document.querySelectorAll(".tip").forEach(tip => {
       tip.addEventListener("click", () => {
-        sendMessage(tip.textContent);
+        handleQuestion(tip.textContent);
       });
     });
-
-    // DARK MODE SWITCH
-    themeToggle.onclick = () => {
-      document.body.classList.toggle("dark");
-    };
   </script>
 </body>
 </html>
