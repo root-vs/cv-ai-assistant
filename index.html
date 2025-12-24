@@ -259,7 +259,7 @@
 
   <script>
     const API_URL = "https://api.langbase.com/v1/pipes/run";
-    const API_KEY = "pipe_2S364v23EnPqhSUWnffRqynzqyDaN7hejk1V8pn5Eizn1iB96k4BW8gqwZS5ooJ494HLs22D7icHdBp3NbXXpWwS"; // <-- Inserisci la tua chiave pipe_...
+    const API_KEY = "PIPE_API_KEY_HERE"; // <-- Inserisci la tua chiave pipe_...
 
     const chat = document.getElementById("chat");
     const input = document.getElementById("input");
@@ -283,18 +283,15 @@
       wrapper.className = "typing-indicator";
       wrapper.innerHTML = `
         <div class="typing-dot"></div>
-                <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
       `;
-      chat.appendChild(wrapper);
+           chat.appendChild(wrapper);
       chat.scrollTop = chat.scrollHeight;
       return wrapper;
     }
 
-    function moveAvatarToChat(questionText) {
-      // Rimuovi onboarding
-      if (onboarding) onboarding.remove();
-
-      // Crea riga con avatar piccolo + nuvoletta
+    function addAiResponse(text) {
       const thoughtRow = document.createElement("div");
       thoughtRow.className = "thought";
 
@@ -304,23 +301,24 @@
 
       const bubble = document.createElement("div");
       bubble.className = "msg ai";
-      bubble.textContent = questionText;
+      bubble.textContent = text;
 
       thoughtRow.appendChild(avatarSmall);
       thoughtRow.appendChild(bubble);
 
       chat.appendChild(thoughtRow);
       chat.scrollTop = chat.scrollHeight;
+      return bubble;
     }
 
     async function handleQuestion(text) {
       if (!text) return;
-      moveAvatarToChat(text);
+      if (onboarding) onboarding.remove();
+
+      // La domanda è solo un messaggio utente
       addMessage("user", text);
 
-      // Mostra typing
       const typingBubble = showTyping();
-
       messages.push({ role: "user", content: text });
       controller = new AbortController();
 
@@ -331,10 +329,7 @@
             "Content-Type": "application/json",
             "Authorization": `Bearer ${API_KEY}`
           },
-          body: JSON.stringify({
-            messages,
-            stream: true
-          }),
+          body: JSON.stringify({ messages, stream: true }),
           signal: controller.signal
         });
 
@@ -347,7 +342,7 @@
         let full = "";
 
         typingBubble.remove();
-        const aiMsg = addMessage("ai", "");
+        const aiBubble = addAiResponse("");
 
         while (true) {
           const { done, value } = await reader.read();
@@ -363,16 +358,15 @@
               const delta =
                 json?.choices?.[0]?.delta?.content ??
                 json?.content ??
-                json?.delta ??
-                "";
+                json?.delta ?? "";
 
               if (delta) {
                 full += delta;
-                aiMsg.textContent = full;
+                aiBubble.textContent = full;
               }
             } catch {
               full += data;
-              aiMsg.textContent = full;
+              aiBubble.textContent = full;
             }
           }
         }
@@ -381,7 +375,7 @@
 
       } catch (err) {
         typingBubble.remove();
-        addMessage("ai", "Error fetching response from Langbase.");
+        addAiResponse("Error fetching response from Langbase.");
       }
     }
 
