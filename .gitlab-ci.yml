@@ -1,16 +1,30 @@
 image: node:18
 
 stages:
+  - build
   - deploy
 
-deploy:
-  stage: deploy
+# Build del sito statico per GitLab Pages
+build-pages:
+  stage: build
   script:
-    - npm install
-  environment:
-    name: production
+    - mkdir public
+    - cp index.html public/
+    - cp styles.css public/
+    - cp -r images public/
+    - cp -r api public/
   artifacts:
     paths:
-      - api/
-      - index.html
-      - styles.css
+      - public
+  only:
+    - main
+
+# Deploy dell'ambiente (serve per iniettare la secret)
+deploy-production:
+  stage: deploy
+  script:
+    - echo "Deploying production environment..."
+  environment:
+    name: production
+  only:
+    - main
