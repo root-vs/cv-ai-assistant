@@ -15,9 +15,27 @@
 <body class="dark">
   <div class="container">
     <header>
-      V.E.R.A. (Valerio’s Enhanced Resume Assistant)
-      <div class="theme-toggle" id="themeToggle">🌓</div>
+      <span>V.E.R.A. (Valerio’s Enhanced Resume Assistant)</span>
+
+      <div class="header-right">
+        <!-- Home button -->
+        <button class="classic-icon-btn" title="Open classic CV site"
+          onclick="window.location.href='./cv-static-site/index.html'">
+          🏠︎
+        </button>
+        <!-- Reload button -->
+        <button class="classic-icon-btn" title="Reload page" onclick="location.reload()">
+          ⟳
+        </button>
+        <!-- Toggle -->
+        <div class="theme-toggle" id="themeToggle">
+          <div class="toggle-icon sun">☀️</div>
+          <div class="toggle-icon moon">🌙</div>
+          <div class="toggle-ball"></div>
+        </div>
+      </div>
     </header>
+
     <div id="chat" class="chat">
       <!-- Onboarding -->
       <div id="onboarding" class="onboarding">
@@ -241,8 +259,15 @@
     });
 
     themeToggle.onclick = () => {
-      document.body.classList.toggle("dark");
+      if (document.body.classList.contains("dark")) {
+        document.body.classList.remove("dark");
+        document.body.classList.add("light");
+      } else {
+        document.body.classList.remove("light");
+        document.body.classList.add("dark");
+      }
     };
+
   </script>
 </body>
 
