@@ -1,13 +1,12 @@
 /****************************************************
- * VARIABLES — Dark mode di default
+ * VARIABLES — Light mode di default
  ****************************************************/
 :root {
     --bg: transparent;
-    --panel: rgba(24, 26, 31, 0.65);
-    --text: #ffffff;
-    --text-light: #e5e5e5;
+    --panel: rgba(255, 255, 255, 0.85);
+    --text: #1f2937;
+    --text-light: #6b7280;
 
-    /* Verde scuro neon-soft (più vivo) */
     --primary: #008f72;
     --primary-hover: #00a685;
 
@@ -15,17 +14,20 @@
     --transition: 0.3s ease;
 }
 
-body.light {
-    --panel: rgba(255, 255, 255, 0.85);
-    --text: #1f2937;
-    --text-light: #6b7280;
+/****************************************************
+ * DARK MODE — attivata con .dark-mode
+ ****************************************************/
+body.dark-mode {
+    --panel: rgba(24, 26, 31, 0.65);
+    --text: #ffffff;
+    --text-light: #e5e5e5;
 
     --primary: #008f72;
     --primary-hover: #00a685;
 }
 
 /****************************************************
- * BACKGROUND — immagine + inversione dark + neon contrast
+ * BACKGROUND — immagine + inversione dark
  ****************************************************/
 body {
     margin: 0;
@@ -34,12 +36,12 @@ body {
     width: 100vw;
 
     background: none;
+    color: var(--text);
 
     display: flex;
     justify-content: center;
     align-items: center;
 
-    color: var(--text);
     transition: background var(--transition), color var(--transition);
     position: relative;
     overflow: hidden;
@@ -47,12 +49,12 @@ body {
     font-size: 17px;
 }
 
-body.dark {
-    background-color: #000;
+body {
+    background-color: #ffffff;
 }
 
-body.light {
-    background-color: #fff;
+body.dark-mode {
+    background-color: #000000;
 }
 
 body::before {
@@ -66,22 +68,30 @@ body::before {
     background-repeat: no-repeat;
     background-attachment: fixed;
 
-    background-color: transparent;
     z-index: -1;
     pointer-events: none;
-
     filter: none;
 }
 
-body.dark::before {
-    filter:
-        invert(1) grayscale(1) brightness(0.95) contrast(1.35) saturate(90%);
+body.dark-mode::before {
+    filter: invert(1) grayscale(1) brightness(0.95) contrast(1.35) saturate(90%);
 }
 
 @media (max-width: 768px) {
     body::before {
         background-attachment: scroll;
     }
+}
+
+/****************************************************
+ * ICON COLORS (come nel sito principale)
+ ****************************************************/
+.fa-sun-o {
+    color: #ffd000d7;
+}
+
+.fa-moon-o {
+    color: #d2cf2d;
 }
 
 /****************************************************
@@ -94,7 +104,7 @@ body.dark::before {
 }
 
 /****************************************************
- * FIX: testo dei toggle leggibile + verde custom + spacing
+ * TIPS
  ****************************************************/
 .tips {
     display: flex;
@@ -170,100 +180,22 @@ header {
     align-items: center;
 }
 
-/****************************************************
- * THEME TOGGLE — Sole/Luna centrato al pixel
- ****************************************************/
-.theme-toggle {
-    width: 64px;
-    /* leggermente più largo per centratura precisa */
-    height: 30px;
-    background: rgba(255, 255, 255, 0.35);
-    border-radius: 999px;
-    position: relative;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    padding: 0 6px;
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.25);
-    transition: background var(--transition), box-shadow var(--transition);
-}
-
-body.dark .theme-toggle {
-    background: rgba(31, 41, 55, 0.55);
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.45);
-}
-
-.theme-toggle .toggle-icon {
-    font-size: 15px;
-    pointer-events: none;
-    opacity: 0.55;
-    transition: opacity var(--transition);
-}
-
-.theme-toggle .sun {
-    position: absolute;
-    left: 10px;
-    /* centrato rispetto alla pallina in posizione iniziale */
-}
-
-.theme-toggle .moon {
-    position: absolute;
-    right: 10px;
-    /* simmetrico al sole */
-}
-
-.theme-toggle .toggle-ball {
-    width: 24px;
-    height: 24px;
-    background: white;
-    border-radius: 50%;
-    position: absolute;
-    left: 4px;
-    /* margine sinistro */
-    top: 50%;
-    transform: translateY(-50%);
-    transition: transform 0.35s cubic-bezier(.4, 0, .2, 1), background var(--transition);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-}
-
-/* Corsa calcolata: width(64) - padding(6*2) - ball(24) = 28px */
-body.light .theme-toggle .toggle-ball {
-    transform: translate(180%, -50%);
-    /* X=28, Y=-50% per centratura verticale */
-}
-
-body.light .theme-toggle .sun {
-    opacity: 1;
-}
-
-body.dark .theme-toggle .moon {
-    opacity: 1;
-}
-
-/* Contenitore orizzontale per icona + toggle */
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
 .header-right {
     display: flex;
     align-items: center;
     gap: 6px;
-    /* più vicino al toggle */
 }
 
-/* Bottone tondo identico al toggle */
+/****************************************************
+ * ICON BUTTONS
+ ****************************************************/
 .classic-icon-btn {
     width: 30px;
     height: 30px;
     border-radius: 50%;
     border: none;
-    /* nessun contorno */
     cursor: pointer;
 
-    /* stesso background del toggle */
     background: rgba(255, 255, 255, 0.35);
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.25);
 
@@ -274,19 +206,16 @@ body.dark .theme-toggle .moon {
     transition: var(--transition);
     padding: 0;
 
-    /* icona home verde neon */
     color: var(--primary);
     font-size: 18px;
     line-height: 1;
 }
 
-/* Dark mode: stesso colore del toggle */
-body.dark .classic-icon-btn {
+body.dark-mode .classic-icon-btn {
     background: rgba(31, 41, 55, 0.55);
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.45);
 }
 
-/* Hover premium */
 .classic-icon-btn:hover {
     background: var(--primary);
     color: white;
@@ -339,12 +268,10 @@ body.dark .classic-icon-btn {
         opacity: 0;
         transform: scale(0.95) translateY(6px);
     }
-
     60% {
         opacity: 1;
         transform: scale(1.02) translateY(-2px);
     }
-
     100% {
         transform: scale(1) translateY(0);
     }
@@ -386,7 +313,6 @@ body.dark .classic-icon-btn {
         opacity: 0;
         transform: translateY(10px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -479,14 +405,10 @@ button:hover {
 }
 
 @keyframes typingBounce {
-
-    0%,
-    60%,
-    100% {
+    0%, 60%, 100% {
         transform: translateY(0);
         opacity: 0.6;
     }
-
     30% {
         transform: translateY(-4px);
         opacity: 1;
@@ -494,7 +416,7 @@ button:hover {
 }
 
 /****************************************************
- * AI AVATAR (nei messaggi)
+ * AI AVATAR
  ****************************************************/
 .avatar-small {
     width: 40px;
@@ -513,7 +435,7 @@ button:hover {
 }
 
 /****************************************************
- * MOBILE FIX — Alza avatar e contenuto
+ * MOBILE FIX
  ****************************************************/
 @media (max-width: 600px) {
     .container {

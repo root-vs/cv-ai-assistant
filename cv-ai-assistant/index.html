@@ -7,44 +7,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-  <!-- Collega il tuo file CSS -->
   <link rel="stylesheet" href="cv_ai_assistant_styles.css">
 </head>
 
-<body class="dark">
+<!-- ⭐ DEFAULT: DARK MODE -->
+<body class="dark-mode">
+
+  <!-- Dark mode toggle -->
+  <span class="w3-button w3-top w3-white w3-xlarge w3-text-grey w3-hover-text-black"
+    style="width:auto; left:0; background-color: transparent !important" onclick="toggleDarkMode()">
+    <i id="themeIcon" class="fa fa-moon-o"></i>
+  </span>
+
   <div class="container">
     <header>
       <span>V.E.R.A. (Valerio’s Enhanced RAG Assistant)</span>
 
       <div class="header-right">
-        <!-- Home button -->
-        <button class="classic-icon-btn" title="Open classic CV site"
-          onclick="window.location.href='../index.html'">
+        <button class="classic-icon-btn" title="Open classic CV site" onclick="window.location.href='../index.html'">
           🏠︎
         </button>
-        <!-- Reload button -->
+
         <button class="classic-icon-btn" title="Reload page" onclick="location.reload()">
           ⟳
         </button>
-        <!-- Toggle -->
-        <div class="theme-toggle" id="themeToggle">
-          <div class="toggle-icon sun">☀️</div>
-          <div class="toggle-icon moon">🌙</div>
-          <div class="toggle-ball"></div>
-        </div>
       </div>
     </header>
 
     <div id="chat" class="chat">
-      <!-- Onboarding -->
       <div id="onboarding" class="onboarding">
         <div class="avatar-large" id="avatarLarge">
           <img src="../images/avatar.png" alt="Avatar">
         </div>
-        <div class="greeting">Hi there 👋, I’m V.E.R.A.
-          I can help you explore Valerio’s experience, skills, and career.
-          Write your question below, or pick one of the suggestions.</div>
+
+        <div class="greeting">
+          Hi there 👋, I’m V.E.R.A.<br>
+          I can help you explore Valerio’s experience, skills, and career.<br>
+          Write your question below, or pick one of the suggestions.
+        </div>
+
         <div class="tips">
           <div class="tip">Tell me about Valerio?</div>
           <div class="tip">What is Valerio’s work experience?</div>
@@ -69,12 +74,10 @@
     const input = document.getElementById("input");
     const sendBtn = document.getElementById("send");
     const onboarding = document.getElementById("onboarding");
-    const themeToggle = document.getElementById("themeToggle");
 
     let controller = null;
     const messages = [];
 
-    // ⭐ Tutte le suggestions disponibili (ordine completo)
     const allSuggestions = [
       "Tell me about Valerio?",
       "What is Valerio’s work experience?",
@@ -83,10 +86,7 @@
       "How can I reach Valerio?"
     ];
 
-    // ⭐ Le prime 3 visibili
     let visibleSuggestions = allSuggestions.slice(0, 3);
-
-    // ⭐ Le rimanenti da mostrare dopo
     let remainingSuggestions = allSuggestions.slice(3);
 
     function renderSuggestions() {
@@ -118,33 +118,29 @@
       const wrapper = document.createElement("div");
       wrapper.className = "typing-indicator";
       wrapper.innerHTML = `
-      <div class="typing-dot"></div>
-      <div class="typing-dot"></div>
-      <div class="typing-dot"></div>
-    `;
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      `;
       chat.appendChild(wrapper);
       chat.scrollTop = chat.scrollHeight;
       return wrapper;
     }
 
     function addAiResponse(text) {
-      const thoughtRow = document.createElement("div");
-      thoughtRow.className = "thought";
+      const row = document.createElement("div");
+      row.className = "thought";
 
-      const avatarSmall = document.createElement("div");
-      avatarSmall.className = "avatar-small";
-      avatarSmall.innerHTML = `<img src="../images/avatar.png" alt="Avatar" style="width:100%;height:100%;object-fit:cover;">`;
+      row.innerHTML = `
+        <div class="avatar-small">
+          <img src="../images/avatar.png" alt="Avatar">
+        </div>
+        <div class="msg ai">${text}</div>
+      `;
 
-      const bubble = document.createElement("div");
-      bubble.className = "msg ai";
-      bubble.textContent = text;
-
-      thoughtRow.appendChild(avatarSmall);
-      thoughtRow.appendChild(bubble);
-
-      chat.appendChild(thoughtRow);
+      chat.appendChild(row);
       chat.scrollTop = chat.scrollHeight;
-      return bubble;
+      return row.querySelector(".msg.ai");
     }
 
     async function handleQuestion(text) {
@@ -152,15 +148,11 @@
 
       if (onboarding) onboarding.remove();
 
-      // ⭐ Rimuovi la suggestion selezionata
       const index = visibleSuggestions.indexOf(text);
       if (index !== -1) {
         visibleSuggestions.splice(index, 1);
-
-        // ⭐ Se ci sono altre suggestions rimanenti → aggiungine una
         if (remainingSuggestions.length > 0) {
-          const next = remainingSuggestions.shift();
-          visibleSuggestions.push(next);
+          visibleSuggestions.push(remainingSuggestions.shift());
         }
       }
 
@@ -181,9 +173,7 @@
           signal: controller.signal
         });
 
-        if (!response.ok || !response.body) {
-          throw new Error("Errore API Langbase");
-        }
+        if (!response.ok || !response.body) throw new Error("API error");
 
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
@@ -221,10 +211,7 @@
 
         messages.push({ role: "assistant", content: full });
 
-        // ⭐ Dopo la risposta → mostra le suggestions rimanenti
-        if (visibleSuggestions.length > 0) {
-          renderSuggestions();
-        }
+        if (visibleSuggestions.length > 0) renderSuggestions();
 
       } catch (err) {
         typingBubble.remove();
@@ -232,7 +219,6 @@
       }
     }
 
-    // Eventi
     sendBtn.onclick = () => {
       const text = input.value.trim();
       if (text) {
@@ -253,22 +239,25 @@
     });
 
     document.querySelectorAll(".tip").forEach(tip => {
-      tip.addEventListener("click", () => {
-        handleQuestion(tip.textContent);
-      });
+      tip.addEventListener("click", () => handleQuestion(tip.textContent));
     });
 
-    themeToggle.onclick = () => {
-      if (document.body.classList.contains("dark")) {
-        document.body.classList.remove("dark");
-        document.body.classList.add("light");
+    /* ⭐ DARK MODE TOGGLE — allineato al CSS */
+    function toggleDarkMode() {
+      const body = document.body;
+      const icon = document.getElementById("themeIcon");
+
+      body.classList.toggle("dark-mode");
+
+      if (body.classList.contains("dark-mode")) {
+        icon.classList.remove("fa-sun-o");
+        icon.classList.add("fa-moon-o");
       } else {
-        document.body.classList.remove("light");
-        document.body.classList.add("dark");
+        icon.classList.remove("fa-moon-o");
+        icon.classList.add("fa-sun-o");
       }
-    };
-
+    }
   </script>
-</body>
 
+</body>
 </html>
