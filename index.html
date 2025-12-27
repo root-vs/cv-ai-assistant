@@ -2,273 +2,86 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <title>V.E.R.A.</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My CV Resume</title>
 
-  <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&display=swap" rel="stylesheet">
-
-  <!-- Collega il tuo file CSS -->
+  <!-- Styles -->
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="styles.css">
+
+  <!-- 3D Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 
-<body class="dark">
-  <div class="container">
-    <header>
-      <span>V.E.R.A. (Valerio’s Enhanced Resume Assistant)</span>
+<body>
 
-      <div class="header-right">
-        <!-- Home button -->
-        <button class="classic-icon-btn" title="Open classic CV site"
-          onclick="window.location.href='./cv-static-site/index.html'">
-          🏠︎
-        </button>
-        <!-- Reload button -->
-        <button class="classic-icon-btn" title="Reload page" onclick="location.reload()">
-          ⟳
-        </button>
-        <!-- Toggle -->
-        <div class="theme-toggle" id="themeToggle">
-          <div class="toggle-icon sun">☀️</div>
-          <div class="toggle-icon moon">🌙</div>
-          <div class="toggle-ball"></div>
+  <!-- Dark mode toggle -->
+  <span class="w3-button w3-top w3-white w3-xlarge w3-text-grey w3-hover-text-black"
+    style="width:auto; left:0; background-color: transparent !important" onclick="toggleDarkMode()">
+    <i class="fa fa-moon-o"></i>
+  </span>
+
+  <!-- Background particles -->
+  <div class="particles-container" id="particles-container"></div>
+
+  <!-- Main content wrapper -->
+  <div class="w3-main w3-padding-large">
+
+    <!-- HOME SECTION -->
+    <div id="home" class="w3-content w3-center">
+
+      <!-- Profile + Prompt -->
+      <div class="content-wrapper w3-center">
+        <img src="images/site.png" alt="Profile image" class="profile-img">
+
+        <div class="linux-prompt">
+          <p id="typedText">|<span class="cursor">▋</span></p>
         </div>
       </div>
-    </header>
 
-    <div id="chat" class="chat">
-      <!-- Onboarding -->
-      <div id="onboarding" class="onboarding">
-        <div class="avatar-large" id="avatarLarge">
-          <img src="images/avatar.png" alt="Avatar">
-        </div>
-        <div class="greeting">Hi there 👋, I’m V.E.R.A.
-          I can help you explore Valerio’s experience, skills, and career.
-          Write your question below, or pick one of the suggestions.</div>
-        <div class="tips">
-          <div class="tip">Tell me about Valerio?</div>
-          <div class="tip">What is Valerio’s work experience?</div>
-          <div class="tip">Has Valerio published anything?</div>
-          <div class="tip">What is Valerio’s education?</div>
-          <div class="tip">How can I reach Valerio?</div>
-        </div>
+      <!-- 3D Cube -->
+      <div id="cubeContainer" class="w3-padding-large"></div>
+
+      <!-- Buttons (shown after cube break) -->
+      <div id="btnContainer" class="w3-center btn-container">
+        <button class="w3-button w3-teal w3-padding-large w3-round-large option-btn"
+          onclick="window.location.href='cv-static-site/index.html'">
+          <i class="fa fa-file-text-o"></i> CV Static Site
+        </button>
+
+        <button class="w3-button w3-teal w3-padding-large w3-round-large option-btn"
+          onclick="window.location.href='cv-ai-assistant/index.html'">
+          <i class="fa fa-android"></i> V.E.R.A. - AI Assistant
+        </button>
+
+        <button class="w3-button w3-teal w3-padding-large w3-round-large option-btn" onclick="downloadCV()">
+          <i class="fa fa-download downloadIcon"></i> Download CV Resume
+        </button>
       </div>
-    </div>
 
-    <div class="composer">
-      <textarea id="input" placeholder="Write a question..."></textarea>
-      <button id="send">Send</button>
+      <!-- Footer inside home -->
+      <footer class="w3-center w3-opacity-min">
+        <div class="w3-animate-opacity">
+          <p class="w3-large w3-text-grey" style="margin: 4px 0;">
+            Built from scratch by <strong>Valerio Serino</strong>
+          </p>
+          <p class="w3-text-grey w3-small" style="margin: 4px 0;">
+            In compliance with <strong>WCAG 2.2</strong> and <strong>Worldwide Accessibility Standards</strong>
+          </p>
+        </div>
+      </footer>
+
     </div>
+    <!-- END HOME SECTION -->
+
   </div>
 
-  <script>
-    const API_URL = "https://api.langbase.com/v1/pipes/run";
-    const API_KEY = "";
+  <!-- Scripts -->
+  <script src="script.js"></script>
 
-    const chat = document.getElementById("chat");
-    const input = document.getElementById("input");
-    const sendBtn = document.getElementById("send");
-    const onboarding = document.getElementById("onboarding");
-    const themeToggle = document.getElementById("themeToggle");
-
-    let controller = null;
-    const messages = [];
-
-    // ⭐ Tutte le suggestions disponibili (ordine completo)
-    const allSuggestions = [
-      "Tell me about Valerio?",
-      "What is Valerio’s work experience?",
-      "Has Valerio published anything?",
-      "What is Valerio’s education?",
-      "How can I reach Valerio?"
-    ];
-
-    // ⭐ Le prime 3 visibili
-    let visibleSuggestions = allSuggestions.slice(0, 3);
-
-    // ⭐ Le rimanenti da mostrare dopo
-    let remainingSuggestions = allSuggestions.slice(3);
-
-    function renderSuggestions() {
-      const tipsContainer = document.createElement("div");
-      tipsContainer.className = "tips";
-
-      visibleSuggestions.forEach(s => {
-        const tip = document.createElement("div");
-        tip.className = "tip";
-        tip.textContent = s;
-        tip.onclick = () => handleQuestion(s);
-        tipsContainer.appendChild(tip);
-      });
-
-      chat.appendChild(tipsContainer);
-      chat.scrollTop = chat.scrollHeight;
-    }
-
-    function addMessage(role, text) {
-      const div = document.createElement("div");
-      div.className = `msg ${role}`;
-      div.textContent = text;
-      chat.appendChild(div);
-      chat.scrollTop = chat.scrollHeight;
-      return div;
-    }
-
-    function showTyping() {
-      const wrapper = document.createElement("div");
-      wrapper.className = "typing-indicator";
-      wrapper.innerHTML = `
-      <div class="typing-dot"></div>
-      <div class="typing-dot"></div>
-      <div class="typing-dot"></div>
-    `;
-      chat.appendChild(wrapper);
-      chat.scrollTop = chat.scrollHeight;
-      return wrapper;
-    }
-
-    function addAiResponse(text) {
-      const thoughtRow = document.createElement("div");
-      thoughtRow.className = "thought";
-
-      const avatarSmall = document.createElement("div");
-      avatarSmall.className = "avatar-small";
-      avatarSmall.innerHTML = `<img src="images/avatar.png" alt="Avatar" style="width:100%;height:100%;object-fit:cover;">`;
-
-      const bubble = document.createElement("div");
-      bubble.className = "msg ai";
-      bubble.textContent = text;
-
-      thoughtRow.appendChild(avatarSmall);
-      thoughtRow.appendChild(bubble);
-
-      chat.appendChild(thoughtRow);
-      chat.scrollTop = chat.scrollHeight;
-      return bubble;
-    }
-
-    async function handleQuestion(text) {
-      if (!text) return;
-
-      if (onboarding) onboarding.remove();
-
-      // ⭐ Rimuovi la suggestion selezionata
-      const index = visibleSuggestions.indexOf(text);
-      if (index !== -1) {
-        visibleSuggestions.splice(index, 1);
-
-        // ⭐ Se ci sono altre suggestions rimanenti → aggiungine una
-        if (remainingSuggestions.length > 0) {
-          const next = remainingSuggestions.shift();
-          visibleSuggestions.push(next);
-        }
-      }
-
-      addMessage("user", text);
-
-      const typingBubble = showTyping();
-      messages.push({ role: "user", content: text });
-      controller = new AbortController();
-
-      try {
-        const response = await fetch(API_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${API_KEY}`
-          },
-          body: JSON.stringify({ messages, stream: true }),
-          signal: controller.signal
-        });
-
-        if (!response.ok || !response.body) {
-          throw new Error("Errore API Langbase");
-        }
-
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder();
-        let full = "";
-
-        typingBubble.remove();
-        const aiBubble = addAiResponse("");
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-
-          const chunk = decoder.decode(value);
-          const lines = chunk.split("\n").filter(Boolean);
-
-          for (const line of lines) {
-            let data = line.replace("data:", "").trim();
-            try {
-              const json = JSON.parse(data);
-              const delta =
-                json?.choices?.[0]?.delta?.content ??
-                json?.content ??
-                json?.delta ?? "";
-
-              if (delta) {
-                full += delta;
-                aiBubble.textContent = full;
-              }
-            } catch {
-              full += data;
-              aiBubble.textContent = full;
-            }
-          }
-        }
-
-        messages.push({ role: "assistant", content: full });
-
-        // ⭐ Dopo la risposta → mostra le suggestions rimanenti
-        if (visibleSuggestions.length > 0) {
-          renderSuggestions();
-        }
-
-      } catch (err) {
-        typingBubble.remove();
-        addAiResponse("Please contact my creator");
-      }
-    }
-
-    // Eventi
-    sendBtn.onclick = () => {
-      const text = input.value.trim();
-      if (text) {
-        handleQuestion(text);
-        input.value = "";
-      }
-    };
-
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        const text = input.value.trim();
-        if (text) {
-          handleQuestion(text);
-          input.value = "";
-        }
-      }
-    });
-
-    document.querySelectorAll(".tip").forEach(tip => {
-      tip.addEventListener("click", () => {
-        handleQuestion(tip.textContent);
-      });
-    });
-
-    themeToggle.onclick = () => {
-      if (document.body.classList.contains("dark")) {
-        document.body.classList.remove("dark");
-        document.body.classList.add("light");
-      } else {
-        document.body.classList.remove("light");
-        document.body.classList.add("dark");
-      }
-    };
-
-  </script>
 </body>
 
 </html>

@@ -1,0 +1,544 @@
+/****************************************************
+ * VARIABLES — Dark mode di default
+ ****************************************************/
+:root {
+    --bg: transparent;
+    --panel: rgba(24, 26, 31, 0.65);
+    --text: #ffffff;
+    --text-light: #e5e5e5;
+
+    /* Verde scuro neon-soft (più vivo) */
+    --primary: #008f72;
+    --primary-hover: #00a685;
+
+    --radius: 18px;
+    --transition: 0.3s ease;
+}
+
+body.light {
+    --panel: rgba(255, 255, 255, 0.85);
+    --text: #1f2937;
+    --text-light: #6b7280;
+
+    --primary: #008f72;
+    --primary-hover: #00a685;
+}
+
+/****************************************************
+ * BACKGROUND — immagine + inversione dark + neon contrast
+ ****************************************************/
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+
+    background: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: var(--text);
+    transition: background var(--transition), color var(--transition);
+    position: relative;
+    overflow: hidden;
+
+    font-size: 17px;
+}
+
+body.dark {
+    background-color: #000;
+}
+
+body.light {
+    background-color: #fff;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+
+    background-image: url("images/background.png");
+    background-size: cover;
+    background-position: calc(50% + 450px) center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    background-color: transparent;
+    z-index: -1;
+    pointer-events: none;
+
+    filter: none;
+}
+
+body.dark::before {
+    filter:
+        invert(1) grayscale(1) brightness(0.95) contrast(1.35) saturate(90%);
+}
+
+@media (max-width: 768px) {
+    body::before {
+        background-attachment: scroll;
+    }
+}
+
+/****************************************************
+ * FIX: Onboarding e tips sempre visibili
+ ****************************************************/
+.onboarding,
+.tips {
+    position: relative;
+    z-index: 2;
+}
+
+/****************************************************
+ * FIX: testo dei toggle leggibile + verde custom + spacing
+ ****************************************************/
+.tips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+}
+
+.tip {
+    color: var(--text);
+    font-weight: 500;
+    background: var(--panel);
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: var(--transition);
+    margin: 2px 0;
+}
+
+.tip:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/****************************************************
+ * CHAT CONTAINER
+ ****************************************************/
+.container {
+    width: min(750px, 90%);
+    height: 80vh;
+
+    background: rgba(24, 26, 31, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    backdrop-filter: blur(22px) saturate(180%);
+    -webkit-backdrop-filter: blur(22px) saturate(180%);
+
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    box-shadow:
+        0 0 40px rgba(0, 0, 0, 0.45),
+        inset 0 0 25px rgba(255, 255, 255, 0.06);
+
+    transition: background var(--transition);
+    z-index: 1;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@media (max-width: 600px) {
+    .container {
+        height: 95vh;
+        border-radius: 12px;
+    }
+}
+
+/****************************************************
+ * HEADER
+ ****************************************************/
+header {
+    padding: clamp(12px, 2vw, 16px);
+    font-weight: 600;
+    font-size: clamp(18px, 2.2vw, 20px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/****************************************************
+ * THEME TOGGLE — Sole/Luna centrato al pixel
+ ****************************************************/
+.theme-toggle {
+    width: 64px;
+    /* leggermente più largo per centratura precisa */
+    height: 30px;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 999px;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.25);
+    transition: background var(--transition), box-shadow var(--transition);
+}
+
+body.dark .theme-toggle {
+    background: rgba(31, 41, 55, 0.55);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.45);
+}
+
+.theme-toggle .toggle-icon {
+    font-size: 15px;
+    pointer-events: none;
+    opacity: 0.55;
+    transition: opacity var(--transition);
+}
+
+.theme-toggle .sun {
+    position: absolute;
+    left: 10px;
+    /* centrato rispetto alla pallina in posizione iniziale */
+}
+
+.theme-toggle .moon {
+    position: absolute;
+    right: 10px;
+    /* simmetrico al sole */
+}
+
+.theme-toggle .toggle-ball {
+    width: 24px;
+    height: 24px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    left: 4px;
+    /* margine sinistro */
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.35s cubic-bezier(.4, 0, .2, 1), background var(--transition);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* Corsa calcolata: width(64) - padding(6*2) - ball(24) = 28px */
+body.light .theme-toggle .toggle-ball {
+    transform: translate(180%, -50%);
+    /* X=28, Y=-50% per centratura verticale */
+}
+
+body.light .theme-toggle .sun {
+    opacity: 1;
+}
+
+body.dark .theme-toggle .moon {
+    opacity: 1;
+}
+
+/* Contenitore orizzontale per icona + toggle */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    /* più vicino al toggle */
+}
+
+/* Bottone tondo identico al toggle */
+.classic-icon-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    /* nessun contorno */
+    cursor: pointer;
+
+    /* stesso background del toggle */
+    background: rgba(255, 255, 255, 0.35);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.25);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: var(--transition);
+    padding: 0;
+
+    /* icona home verde neon */
+    color: var(--primary);
+    font-size: 18px;
+    line-height: 1;
+}
+
+/* Dark mode: stesso colore del toggle */
+body.dark .classic-icon-btn {
+    background: rgba(31, 41, 55, 0.55);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.45);
+}
+
+/* Hover premium */
+.classic-icon-btn:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/****************************************************
+ * CHAT AREA
+ ****************************************************/
+.chat {
+    flex: 1;
+    overflow-y: auto;
+    padding: clamp(16px, 3vw, 24px);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.chat::-webkit-scrollbar {
+    display: none;
+}
+
+/****************************************************
+ * MESSAGES
+ ****************************************************/
+.msg {
+    max-width: 75%;
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    line-height: 1.55;
+    font-size: 16px;
+    animation: fadeBounce 0.35s ease;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    transition: background var(--transition), color var(--transition);
+}
+
+@media (max-width: 600px) {
+    .msg {
+        max-width: 90%;
+        font-size: 15px;
+        padding: 12px 14px;
+    }
+}
+
+@keyframes fadeBounce {
+    0% {
+        opacity: 0;
+        transform: scale(0.95) translateY(6px);
+    }
+
+    60% {
+        opacity: 1;
+        transform: scale(1.02) translateY(-2px);
+    }
+
+    100% {
+        transform: scale(1) translateY(0);
+    }
+}
+
+.msg.user {
+    align-self: flex-end;
+    background: var(--primary);
+    color: white;
+}
+
+.msg.user:hover {
+    background: var(--primary-hover);
+}
+
+.msg.ai {
+    align-self: flex-start;
+    background: var(--panel);
+    color: var(--text);
+}
+
+/****************************************************
+ * ONBOARDING
+ ****************************************************/
+.onboarding {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    text-align: center;
+    padding: 20px;
+    animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.avatar-large {
+    width: clamp(120px, 20vw, 220px);
+    height: clamp(120px, 20vw, 220px);
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+.avatar-large img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/****************************************************
+ * COMPOSER
+ ****************************************************/
+.composer {
+    padding: clamp(12px, 2vw, 16px);
+    display: flex;
+    gap: 12px;
+}
+
+textarea {
+    flex: 1;
+    resize: none;
+    border: none;
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    font-size: 16px;
+    background: var(--panel);
+    color: var(--text);
+    outline: none;
+    transition: background var(--transition), color var(--transition);
+}
+
+textarea:focus {
+    border: 1px solid var(--primary);
+}
+
+button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0 22px;
+    border-radius: var(--radius);
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+button:hover {
+    background: var(--primary-hover);
+}
+
+/****************************************************
+ * TYPING INDICATOR
+ ****************************************************/
+.typing-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 14px;
+    background: var(--panel);
+    border-radius: var(--radius);
+    animation: fadeIn 0.25s ease;
+}
+
+.typing-dot {
+    width: 6px;
+    height: 6px;
+    background: #9ca3af;
+    border-radius: 50%;
+    animation: typingBounce 1.4s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typingBounce {
+
+    0%,
+    60%,
+    100% {
+        transform: translateY(0);
+        opacity: 0.6;
+    }
+
+    30% {
+        transform: translateY(-4px);
+        opacity: 1;
+    }
+}
+
+/****************************************************
+ * AI AVATAR (nei messaggi)
+ ****************************************************/
+.avatar-small {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.thought {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    animation: fadeBounce 0.35s ease;
+}
+
+/****************************************************
+ * MOBILE FIX — Alza avatar e contenuto
+ ****************************************************/
+@media (max-width: 600px) {
+    .container {
+        top: 44%;
+        transform: translate(-50%, -44%);
+        height: 88vh;
+    }
+
+    .onboarding {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        gap: 14px;
+    }
+
+    .avatar-large {
+        width: 110px;
+        height: 110px;
+    }
+
+    .chat {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .composer {
+        padding: 8px;
+    }
+}

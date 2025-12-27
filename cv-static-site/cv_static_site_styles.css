@@ -1,0 +1,234 @@
+/******************** GENERAL ********************/
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body, h1, h2 {
+    font-family: 'Orbitron', sans-serif;
+}
+
+h1, h2 {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+h1 { font-size: xx-large; }
+h2 { font-size: large; }
+
+/******************** PARALLAX ********************/
+.bgimg-1, .bgimg-2, .bgimg-3, .bgimg-4 {
+    position: relative;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: center;
+    height: 28vh;
+    width: 100%;
+}
+
+.bgimg-1 { background-image: url('../images/parallax_1.jpeg'); }
+.bgimg-2 { background-image: url('../images/parallax_2.png'); }
+.bgimg-3 { background-image: url('../images/parallax_3.png'); }
+.bgimg-4 { background-image: url('../images/parallax_4.jpeg'); }
+
+/******************** FLOAT ANIMATIONS ********************/
+@keyframes float-1 {
+    0%   { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(10%, 10%) scale(1.1); }
+}
+
+@keyframes float-2 {
+    0%   { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-10%, -5%) scale(1.15); }
+}
+
+@keyframes float-3 {
+    0%   { transform: translate(0, 0) scale(1); opacity: 0.3; }
+    100% { transform: translate(-5%, 10%) scale(1.05); opacity: 0.6; }
+}
+
+/******************** PARTICLES ********************/
+.particles-container {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.particle {
+    position: fixed;
+    font-family: monospace;
+    font-size: 16px;
+    color: #6c6c6c;
+    opacity: 0;
+    pointer-events: none;
+    user-select: none;
+    z-index: 1;
+}
+
+/******************** MENU SECTION ********************/
+.dark-mode {
+    background-color: black;
+    color: white;
+}
+
+.fa-sun-o  { color: #ffd000d7; }
+.fa-moon-o { color: #d2cf2d; }
+
+.footer { background-color: #f1f1f1; text-align: center; }
+.dark-mode .footer { background-color: #000; }
+
+.p, .w3-card-4 { z-index: 3; }
+
+.dark-mode .w3-card-4 {
+    background-color: #000;
+    color: #646464;
+    border: 1px solid #444;
+}
+
+.icon-teal { color: teal; }
+
+.dark-mode .w3-text-grey {
+    color: #fff !important;
+}
+
+.dark-mode .background,
+.dark-mode .bgimg-1,
+.dark-mode .bgimg-2,
+.dark-mode .bgimg-3,
+.dark-mode .bgimg-4 {
+    filter: invert(1) sepia(1) saturate(10%) hue-rotate(180deg) brightness(1) contrast(1);
+}
+
+.w3-sidebar {
+    width: 100%;
+    height: 100%;
+    font-size: 18px;
+    padding-top: 150px;
+    display: none;
+    right: 0;
+    z-index: 4;
+}
+
+.no-scroll {
+    overflow: hidden;
+    position: fixed;
+    inset: 0;
+}
+
+/******************** HOME SECTION ********************/
+#home {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    padding-top: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.dark-mode #home::before {
+    filter: invert(1) sepia(1) saturate(10%) hue-rotate(180deg) brightness(0.8) contrast(1);
+}
+
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    margin-top: -200px;
+}
+
+.profile-img {
+    width: 140px;
+    height: 140px;
+    opacity: 0;
+    animation: zoomFadeIn 1.5s ease-out forwards;
+}
+
+@keyframes zoomFadeIn {
+    0%   { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1);   opacity: 1; }
+}
+
+.linux-prompt {
+    background-color: rgb(245, 255, 255);
+    color: rgb(74, 74, 74);
+    border-left: 5px solid rgb(114, 172, 172);
+    border-right: 5px solid rgb(114, 172, 172);
+    font-family: 'Courier New', monospace;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 18px;
+    box-shadow: 0 0 25px rgb(114, 172, 172);
+}
+
+.dark-mode .linux-prompt {
+    background-color: #101010;
+    color: #fff;
+}
+
+#btnContainer {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 35%;
+    visibility: hidden;
+    z-index: 3;
+}
+
+/******************** SMALL SCREEN ********************/
+@media (max-width: 600px) {
+    #btnContainer { bottom: 32%; }
+}
+
+/******************** NEON TEAL SCROLL INDICATOR ********************/
+.scroll-indicator {
+    width: 26px;
+    height: 46px;
+    border: 2px solid #00f5e1;
+    border-radius: 20px;
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0.9;
+}
+
+.scroll-indicator::after {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    background: #00f5e1;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    animation: scroll-dot 1.4s infinite ease-in-out;
+    box-shadow:
+        0 0 6px #00f5e1,
+        0 0 12px #00f5e1,
+        0 0 20px rgba(0, 245, 225, 0.6);
+}
+
+@keyframes scroll-dot {
+    0%   { opacity: 0; transform: translate(-50%, 0); }
+    40%  { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%, 18px); }
+}
+
+/* Neon teal glow */
+.neon-teal-scroll {
+    box-shadow:
+        0 0 6px #00f5e1,
+        0 0 12px #00f5e1,
+        0 0 20px rgba(0, 245, 225, 0.6);
+}
