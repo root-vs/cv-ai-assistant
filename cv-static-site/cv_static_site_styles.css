@@ -1,24 +1,36 @@
 /******************** GENERAL ********************/
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
     height: 100%;
 }
 
-body, h1, h2 {
+body,
+h1,
+h2 {
     font-family: 'Orbitron', sans-serif;
 }
 
-h1, h2 {
+h1,
+h2 {
     text-transform: uppercase;
     letter-spacing: 2px;
 }
 
-h1 { font-size: xx-large; }
-h2 { font-size: large; }
+h1 {
+    font-size: xx-large;
+}
+
+h2 {
+    font-size: large;
+}
 
 /******************** PARALLAX ********************/
-.bgimg-1, .bgimg-2, .bgimg-3, .bgimg-4 {
+.bgimg-1,
+.bgimg-2,
+.bgimg-3,
+.bgimg-4 {
     position: relative;
     background-attachment: fixed;
     background-repeat: no-repeat;
@@ -28,25 +40,53 @@ h2 { font-size: large; }
     width: 100%;
 }
 
-.bgimg-1 { background-image: url('../images/parallax_1.jpeg'); }
-.bgimg-2 { background-image: url('../images/parallax_2.png'); }
-.bgimg-3 { background-image: url('../images/parallax_3.png'); }
-.bgimg-4 { background-image: url('../images/parallax_4.jpeg'); }
+.bgimg-1 {
+    background-image: url('../images/parallax_1.jpeg');
+}
+
+.bgimg-2 {
+    background-image: url('../images/parallax_2.png');
+}
+
+.bgimg-3 {
+    background-image: url('../images/parallax_3.png');
+}
+
+.bgimg-4 {
+    background-image: url('../images/parallax_4.jpeg');
+}
 
 /******************** FLOAT ANIMATIONS ********************/
 @keyframes float-1 {
-    0%   { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(10%, 10%) scale(1.1); }
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate(10%, 10%) scale(1.1);
+    }
 }
 
 @keyframes float-2 {
-    0%   { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(-10%, -5%) scale(1.15); }
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate(-10%, -5%) scale(1.15);
+    }
 }
 
 @keyframes float-3 {
-    0%   { transform: translate(0, 0) scale(1); opacity: 0.3; }
-    100% { transform: translate(-5%, 10%) scale(1.05); opacity: 0.6; }
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.3;
+    }
+
+    100% {
+        transform: translate(-5%, 10%) scale(1.05);
+        opacity: 0.6;
+    }
 }
 
 /******************** PARTICLES ********************/
@@ -76,13 +116,27 @@ h2 { font-size: large; }
     color: white;
 }
 
-.fa-sun-o  { color: #ffd000d7; }
-.fa-moon-o { color: #d2cf2d; }
+.fa-sun-o {
+    color: #ffd000d7;
+}
 
-.footer { background-color: #f1f1f1; text-align: center; }
-.dark-mode .footer { background-color: #000; }
+.fa-moon-o {
+    color: #d2cf2d;
+}
 
-.p, .w3-card-4 { z-index: 3; }
+.footer {
+    background-color: #f1f1f1;
+    text-align: center;
+}
+
+.dark-mode .footer {
+    background-color: #000;
+}
+
+.p,
+.w3-card-4 {
+    z-index: 3;
+}
 
 .dark-mode .w3-card-4 {
     background-color: #000;
@@ -90,7 +144,9 @@ h2 { font-size: large; }
     border: 1px solid #444;
 }
 
-.icon-teal { color: teal; }
+.icon-teal {
+    color: teal;
+}
 
 .dark-mode .w3-text-grey {
     color: #fff !important;
@@ -154,8 +210,15 @@ h2 { font-size: large; }
 }
 
 @keyframes zoomFadeIn {
-    0%   { transform: scale(0.8); opacity: 0; }
-    100% { transform: scale(1);   opacity: 1; }
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .linux-prompt {
@@ -186,7 +249,9 @@ h2 { font-size: large; }
 
 /******************** SMALL SCREEN ********************/
 @media (max-width: 600px) {
-    #btnContainer { bottom: 32%; }
+    #btnContainer {
+        bottom: 32%;
+    }
 }
 
 /******************** NEON TEAL SCROLL INDICATOR ********************/
@@ -220,9 +285,19 @@ h2 { font-size: large; }
 }
 
 @keyframes scroll-dot {
-    0%   { opacity: 0; transform: translate(-50%, 0); }
-    40%  { opacity: 1; }
-    100% { opacity: 0; transform: translate(-50%, 18px); }
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 0);
+    }
+
+    40% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, 18px);
+    }
 }
 
 /* Neon teal glow */
@@ -231,4 +306,20 @@ h2 { font-size: large; }
         0 0 6px #00f5e1,
         0 0 12px #00f5e1,
         0 0 20px rgba(0, 245, 225, 0.6);
+}
+
+.mode-aware-btn {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    color: inherit !important;
+    padding: 6px 10px;
+}
+
+/* Dark mode */
+.dark-mode .mode-aware-btn {
+    background-color: transparent !important;
+    border: none !important;
+    color: #fff !important;
 }

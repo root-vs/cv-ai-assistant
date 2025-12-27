@@ -14,36 +14,20 @@
 
 <body>
 
-  <!-- Hidden Sidebar (reveals when clicked on menu icon)-->
-  <nav class="w3-sidebar w3-black w3-animate-right w3-xxlarge" id="mySidebar">
-    <a href="javascript:void(0)" onclick="closeNav()" class="w3-button w3-black w3-xxlarge w3-display-topright"
-      style="padding:0 12px;">
-      <i class="fa fa-remove"></i>
-    </a>
-    <div class="w3-bar-block w3-center">
-      <a href="#" class="w3-bar-item w3-button w3-text-grey w3-hover-black" onclick="closeNav()">Home</a>
-      <a href="#about" class="w3-bar-item w3-button w3-text-grey w3-hover-black" onclick="closeNav()">About</a>
-      <a href="#skills" class="w3-bar-item w3-button w3-text-grey w3-hover-black" onclick="closeNav()">Skills</a>
-      <a href="#work_experience" class="w3-bar-item w3-button w3-text-grey w3-hover-black" onclick="closeNav()">Work
-        Experience</a>
-      <a href="#certifications" class="w3-bar-item w3-button w3-text-grey w3-hover-black"
-        onclick="closeNav()">Certifications</a>
-      <a href="#publications" class="w3-bar-item w3-button w3-text-grey w3-hover-black"
-        onclick="closeNav()">Publications</a>
-      <a href="#education" class="w3-bar-item w3-button w3-text-grey w3-hover-black" onclick="closeNav()">Education</a>
-      <a href="#contact" class="w3-bar-item w3-button w3-text-grey w3-hover-black" onclick="closeNav()">Contact</a>
-    </div>
-  </nav>
-
   <span class="w3-button w3-top w3-white w3-xlarge w3-text-grey w3-hover-text-black"
     style="width:auto;left:0;background-color: transparent !important" onclick="toggleDarkMode()">
     <i class="fa fa-moon-o"></i>
   </span>
 
-  <!-- Menu icon to open sidebar -->
-  <span class="w3-button w3-top w3-white w3-xlarge w3-text-grey w3-hover-text-black"
-    style="width:auto;right:0;background-color: transparent !important" onclick="openNav()">
-    <i class="fa fa-bars"></i>
+  <span class="w3-top w3-xlarge top-right-btns" style="width:auto;right:0;background-color: transparent !important">
+    <button class="w3-button mode-aware-btn" title="Home" onclick="window.location.href='../index.html'">
+      🏠︎
+    </button>
+
+    <button class="w3-button mode-aware-btn" title="Back to top"
+      onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+      ⤴︎
+    </button>
   </span>
 
   <!-- Bit effect always on in background -->
