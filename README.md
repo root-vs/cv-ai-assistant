@@ -12,6 +12,7 @@ This project leverages:
 - **HTML** for a solid structure and content.
 - **CSS** for stylish and responsive design, ensuring a great look on any device.
 - **JavaScript** for dynamic interactions and the AI assistant functionality.
+- **Langbase** as the backend for AI processing with RAG (Retrieval-Augmented Generation).
 
 ## 🎯 Why This Site?
 This site serves as a **simple yet interactive** way to explore my professional profile, demonstrating my skills. **Feel free to reach out** if you have any questions or feedback!
