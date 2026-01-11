@@ -49,6 +49,10 @@ body {
     font-size: 17px;
 }
 
+html {
+    overflow: hidden;
+}
+
 body {
     background-color: #ffffff;
 }
@@ -80,6 +84,31 @@ body.dark-mode::before {
 @media (max-width: 768px) {
     body::before {
         background-attachment: scroll;
+    }
+
+    .container {
+        height: 87vh;
+        width: 90vw;
+        top: 45%;
+        transform: translate(-50%, -45%);
+    }
+
+    .onboarding {
+        gap: 16px;
+    }
+
+    .avatar-large {
+        width: clamp(100px, 18vw, 180px);
+        height: clamp(100px, 18vw, 180px);
+    }
+
+    .greeting {
+        font-size: 16px;
+    }
+
+    .tip {
+        font-size: 15px;
+        padding: 9px 13px;
     }
 }
 
@@ -135,7 +164,7 @@ body.dark-mode::before {
  ****************************************************/
 .container {
     width: min(750px, 90%);
-    height: 80vh;
+    height: 77vh;
 
     background: rgba(24, 26, 31, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.12);
@@ -156,16 +185,10 @@ body.dark-mode::before {
     z-index: 1;
 
     position: absolute;
-    top: 50%;
+    top: 44%;
     left: 50%;
     transform: translate(-50%, -50%);
-}
-
-@media (max-width: 600px) {
-    .container {
-        height: 95vh;
-        border-radius: 12px;
-    }
+    padding: 10px;
 }
 
 /****************************************************
@@ -353,10 +376,24 @@ textarea {
     color: var(--text);
     outline: none;
     transition: background var(--transition), color var(--transition);
+    height: 48px;
+    line-height: 24px;
+    overflow: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 textarea:focus {
     border: 1px solid var(--primary);
+}
+
+textarea::placeholder {
+    text-align: left;
+    color: var(--text-light);
+}
+
+textarea::-webkit-scrollbar {
+    display: none;
 }
 
 button {
@@ -432,6 +469,8 @@ button:hover {
     align-items: flex-start;
     gap: 8px;
     animation: fadeBounce 0.35s ease;
+    align-self: flex-start;
+    width: 100%;
 }
 
 /****************************************************
@@ -439,9 +478,10 @@ button:hover {
  ****************************************************/
 @media (max-width: 600px) {
     .container {
-        top: 44%;
-        transform: translate(-50%, -44%);
-        height: 88vh;
+        top: 40%;
+        transform: translate(-50%, -41%);
+        height: 74vh;
+        padding: 8px;
     }
 
     .onboarding {
@@ -462,5 +502,20 @@ button:hover {
 
     .composer {
         padding: 8px;
+    }
+
+    .tip {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    textarea {
+        font-size: 14px;
+        padding: 10px 12px;
+    }
+
+    button {
+        padding: 0 16px;
+        font-size: 14px;
     }
 }
