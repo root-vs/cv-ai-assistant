@@ -323,3 +323,20 @@ h2 {
     border: none !important;
     color: #fff !important;
 }
+
+/****************************************
+ *  CURSOR BLINK
+ ****************************************/
+
+.cursor {
+    animation: blink 0.8s steps(1) infinite;
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
