@@ -68,8 +68,8 @@
   </div>
 
   <script>
-    const API_URL = "https://api.langbase.com/v1/pipes/run";
-    const API_KEY = "";
+    // URL del Cloudflare Worker Backend
+    const API_URL = "https://morning-union-6dad.mastoefestarelle.workers.dev";
 
     const chat = document.getElementById("chat");
     const input = document.getElementById("input");
@@ -89,6 +89,17 @@
 
     let visibleSuggestions = allSuggestions.slice(0, 3);
     let remainingSuggestions = allSuggestions.slice(3);
+
+    // Funzione helper per rimuovere le fonti e i riferimenti [1], [2], [1] filename.pdf
+    function cleanCitations(text) {
+      return text
+        // Rimuove citazioni a piè di pagina del tipo "[1] nomefile.pdf"
+        .replace(/\[\d+\]\s*[\w-]+\.\w+/g, "")
+        // Rimuove i numeri tra quadre singoli come [1], [2]
+        .replace(/\[\d+\]/g, "")
+        // Pulisce eventuali doppi spazi creati dalla rimozione
+        .replace(/  +/g, " ");
+    }
 
     function renderSuggestions() {
       const tipsContainer = document.createElement("div");
@@ -167,10 +178,9 @@
         const response = await fetch(API_URL, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${API_KEY}`
+            "Content-Type": "application/json"
           },
-          body: JSON.stringify({ messages, stream: true }),
+          body: JSON.stringify({ messages }),
           signal: controller.signal
         });
 
@@ -179,6 +189,7 @@
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
         let full = "";
+        let buffer = "";
 
         typingBubble.remove();
         const aiBubble = addAiResponse("");
@@ -187,13 +198,23 @@
           const { done, value } = await reader.read();
           if (done) break;
 
-          const chunk = decoder.decode(value);
-          const lines = chunk.split("\n").filter(Boolean);
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split("\n");
+          
+          buffer = lines.pop() || "";
 
           for (const line of lines) {
-            let data = line.replace("data:", "").trim();
+            let cleanLine = line.trim();
+            if (!cleanLine) continue;
+
+            if (cleanLine.startsWith("data:")) {
+              cleanLine = cleanLine.replace(/^data:\s*/, "").trim();
+            }
+
+            if (cleanLine === "[DONE]") continue;
+
             try {
-              const json = JSON.parse(data);
+              const json = JSON.parse(cleanLine);
               const delta =
                 json?.choices?.[0]?.delta?.content ??
                 json?.content ??
@@ -201,22 +222,32 @@
 
               if (delta) {
                 full += delta;
-                aiBubble.textContent = full;
+                aiBubble.textContent = cleanCitations(full);
               }
             } catch {
-              full += data;
-              aiBubble.textContent = full;
+              const isJsonObjectOrMetadata = cleanLine.includes('"chat.completion.chunk"') || 
+                                              cleanLine.includes('"object":') || 
+                                              cleanLine.startsWith("{") || 
+                                              cleanLine.endsWith("}");
+              
+              if (!isJsonObjectOrMetadata) {
+                full += cleanLine;
+                aiBubble.textContent = cleanCitations(full);
+              }
             }
           }
         }
 
-        messages.push({ role: "assistant", content: full });
+        // Salva la risposta pulita anche nella cronologia dei messaggi
+        const cleanFullText = cleanCitations(full);
+        messages.push({ role: "assistant", content: cleanFullText });
 
         if (visibleSuggestions.length > 0) renderSuggestions();
 
       } catch (err) {
         typingBubble.remove();
-        addAiResponse("Sorry… Valerio has temporarily disabled me 😔 If you’d like me back online, you can contact him at <strong>valerioserino.info@gmail.com</strong> or return to the homepage to visit his website.");
+        const errorBubble = addAiResponse("");
+        errorBubble.innerHTML = "Sorry… Valerio has temporarily disabled me 😔 If you’d like me back online, you can contact him at <strong>valerioserino.info@gmail.com</strong> or return to the homepage to visit his website.";
       }
     }
 
