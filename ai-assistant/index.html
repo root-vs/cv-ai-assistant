@@ -90,15 +90,20 @@
     let visibleSuggestions = allSuggestions.slice(0, 3);
     let remainingSuggestions = allSuggestions.slice(3);
 
-    // Funzione helper per rimuovere le fonti e i riferimenti [1], [2], [1] filename.pdf
+    // Funzione helper avanzata per rimuovere fonti, citazioni e spazi isolati
     function cleanCitations(text) {
       return text
-        // Rimuove citazioni a piè di pagina del tipo "[1] nomefile.pdf"
+        // 1. Rimuove la dicitura "Sources:", "References:", "Fonti:", ecc. (case insensitive)
+        .replace(/(?:Sources|References|Fonti|Source)\s*:\s*/gi, "")
+        // 2. Rimuove citazioni a piè di pagina del tipo "[1] nomefile.pdf"
         .replace(/\[\d+\]\s*[\w-]+\.\w+/g, "")
-        // Rimuove i numeri tra quadre singoli come [1], [2]
+        // 3. Rimuove i numeri tra quadre singoli come [1], [2]
         .replace(/\[\d+\]/g, "")
-        // Pulisce eventuali doppi spazi creati dalla rimozione
-        .replace(/  +/g, " ");
+        // 4. Correggi gli spazi prima della punteggiatura (es. "mindset ." -> "mindset.")
+        .replace(/\s+([.,!?:;])/g, "$1")
+        // 5. Pulisce doppi spazi creati dalla rimozione
+        .replace(/  +/g, " ")
+        .trim();
     }
 
     function renderSuggestions() {
@@ -200,7 +205,7 @@
 
           buffer += decoder.decode(value, { stream: true });
           const lines = buffer.split("\n");
-          
+
           buffer = lines.pop() || "";
 
           for (const line of lines) {
@@ -225,11 +230,11 @@
                 aiBubble.textContent = cleanCitations(full);
               }
             } catch {
-              const isJsonObjectOrMetadata = cleanLine.includes('"chat.completion.chunk"') || 
-                                              cleanLine.includes('"object":') || 
-                                              cleanLine.startsWith("{") || 
-                                              cleanLine.endsWith("}");
-              
+              const isJsonObjectOrMetadata = cleanLine.includes('"chat.completion.chunk"') ||
+                cleanLine.includes('"object":') ||
+                cleanLine.startsWith("{") ||
+                cleanLine.endsWith("}");
+
               if (!isJsonObjectOrMetadata) {
                 full += cleanLine;
                 aiBubble.textContent = cleanCitations(full);
