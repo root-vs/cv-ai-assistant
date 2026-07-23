@@ -4,15 +4,13 @@ Welcome to my **CV resume site**! 🚀
 
 ## 🌟 Features
 - 🌐 **Explore** a stunning **static** version of my resume, showcasing my skills and experiences in a visually appealing format.
-- 🤖 **Engage** with **V.E.R.A.**, an intelligent AI assistant powered by **Langbase** and a **RAG (Retrieval-Augmented Generation)** approach, ready to answer your questions about my background and expertise.
+- 🤖 **Engage** with **V.E.R.A.**, an intelligent AI assistant that can answer questions about my background and expertise through a frontend experience backed by a dedicated backend service.
 - 📥 **Download** my polished **PDF resume** for offline viewing and sharing.
 
 ## 🛠️ Technologies Used
-This project leverages:
-- **HTML** for a solid structure and content.
-- **CSS** for stylish and responsive design, ensuring a great look on any device.
-- **JavaScript** for dynamic interactions and the AI assistant functionality.
-- **Langbase** as the backend for AI processing with RAG (Retrieval-Augmented Generation).
+This project is organized into a frontend and a backend:
+- **Frontend**: HTML, CSS, and JavaScript for the static CV experience and the interactive V.E.R.A. interface.
+- **Backend**: a server-side component that handles AI requests and supports the assistant experience.
 
 ## 🎯 Why This Site?
 This site serves as a **simple yet interactive** way to explore my professional profile, demonstrating my skills. **Feel free to reach out** if you have any questions or feedback!
