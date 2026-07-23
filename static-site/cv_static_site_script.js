@@ -162,7 +162,7 @@ function closeNav() {
 
 /* PROMPT SIMULATOR */
 // Typing effect
-const text = "Hey! 👋 Scroll down to learn more about me… 🚀";
+const text = "Hey! 👋 Scroll down to learn more about me … 🚀";
 let i = 0;
 function type() {
     if (i < text.length) {
