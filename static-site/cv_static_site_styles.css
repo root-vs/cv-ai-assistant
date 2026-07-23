@@ -103,11 +103,12 @@ h2 {
     position: fixed;
     font-family: monospace;
     font-size: 16px;
-    color: #6c6c6c;
+    color: #2dd4bf;
     opacity: 0;
     pointer-events: none;
     user-select: none;
     z-index: 1;
+    text-shadow: 0 0 6px rgba(45, 212, 191, 0.55);
 }
 
 /******************** MENU SECTION ********************/
