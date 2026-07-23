@@ -61,6 +61,27 @@ body.dark-mode {
     background-color: #000000;
 }
 
+.particles-container {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.particle {
+    position: fixed;
+    font-family: monospace;
+    font-size: 16px;
+    color: #2dd4bf;
+    opacity: 0;
+    pointer-events: none;
+    user-select: none;
+    text-shadow: 0 0 6px rgba(45, 212, 191, 0.55);
+}
+
 body::before {
     content: "";
     position: fixed;
