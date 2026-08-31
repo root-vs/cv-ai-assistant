@@ -46,6 +46,7 @@ h2 {
     color: #6c6c6c;
     opacity: 0;
     pointer-events: none;
+    -webkit-user-select: none;
     user-select: none;
     z-index: 1;
 }
@@ -83,6 +84,20 @@ h2 {
 
 .dark-mode .background {
     filter: invert(1) sepia(1) saturate(10%) hue-rotate(180deg) brightness(1.0) contrast(1);
+}
+
+/****************************************
+ *  THEME TOGGLE & FOOTER
+ ****************************************/
+
+.theme-toggle {
+    width: auto;
+    left: 0;
+    background-color: transparent !important;
+}
+
+.footer-text {
+    margin: 4px 0;
 }
 
 /****************************************
