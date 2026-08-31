@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MY AI CINEMATIC GALLERY | Valerio Serino</title>
+
+  <!-- Shared CSS / Fonts -->
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="cv_static_site_styles.css">
+  <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --accent: #00ffff;
+      --teal: #008080;
+      --back: #030606;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+      background: var(--back);
+      font-family: 'Orbitron', sans-serif;
+      color: #fff;
+      text-align: center;
+    }
+
+    /* LIGHT MODE OVERRIDE */
+    body.light-mode {
+      background: #fdfdfd;
+      color: #111;
+    }
+
+    body.light-mode .page-title {
+      color: #008080;
+      text-shadow: none;
+    }
+
+    body.light-mode .tile {
+      background: rgba(0, 128, 128, .06);
+      border-color: rgba(0, 128, 128, .35);
+      box-shadow: none;
+    }
+
+    body.light-mode .contact-links a {
+      color: #008080;
+    }
+
+    /* PAGE WRAPPER TO KEEP EVERYTHING CENTERED */
+    .cinema-wrapper {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 30px 20px 12px;
+    }
+
+    /* PAGE TITLE */
+    .page-title {
+      margin: 0;
+      font-size: clamp(24px, 4vw, 42px);
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-shadow: 0 0 18px rgba(0, 255, 255, .45);
+    }
+
+    /* GALLERY AREA */
+    .gallery {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 20px;
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
+    }
+
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 28px;
+      max-width: 1200px;
+    }
+
+    /* TILE */
+    .tile {
+      width: clamp(280px, 32vw, 380px);
+      background: rgba(0, 128, 128, .15);
+      border: 1px solid rgba(0, 255, 255, .25);
+      border-radius: 14px;
+      padding: 14px;
+      cursor: pointer;
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+
+    .tile:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 18px rgba(0, 255, 255, .35);
+    }
+
+    .tile video {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      pointer-events: none;
+    }
+
+    .tile h3 {
+      margin: 0 0 6px;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .tile p {
+      margin: 0;
+      font-size: 17px;
+      font-family: 'Inter', sans-serif;
+      opacity: .85;
+      line-height: 1.5;
+      letter-spacing: .01em;
+      text-align: justify;
+    }
+
+    .tile p em {
+      font-style: italic;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .tile .tech-note {
+      display: block;
+      margin-top: 8px;
+      font-size: 13px;
+      line-height: 1.5;
+      opacity: .8;
+      letter-spacing: .02em;
+    }
+
+    /* CONTACT SECTION */
+    .contact-section {
+      margin-top: 0;
+      font-size: 14px;
+      color: #ccc;
+      flex-shrink: 0;
+      width: 100%;
+      padding-bottom: 14px;
+      transform: translateY(-8px);
+    }
+
+    .contact-links a {
+      color: var(--accent);
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    .contact-links a:hover {
+      text-shadow: 0 0 12px var(--accent);
+    }
+
+    footer {
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 6px;
+    }
+
+    footer strong {
+      color: var(--accent);
+    }
+
+    /* MODAL */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .85);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 50;
+      padding: 20px;
+    }
+
+    .modal-content {
+      width: min(90vw, 1200px);
+    }
+
+    .modal video {
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      box-shadow: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Dark mode toggle (same markup as CV page) -->
+  <span class="w3-button w3-top w3-white w3-xlarge w3-text-grey w3-hover-text-black"
+    style="width:auto;left:0;background-color: transparent !important" onclick="toggleDarkMode()">
+    <i class="fa fa-moon-o"></i>
+  </span>
+
+  <!-- Top right buttons (Home + Back to top) -->
+  <span class="w3-top w3-xlarge top-right-btns" style="width:auto;right:0;background-color: transparent !important">
+    <button class="w3-button mode-aware-btn" title="Home" onclick="window.location.href='../index.html'">
+      🏠︎
+    </button>
+
+    <button class="w3-button mode-aware-btn" title="Return to home" onclick="window.location.href='../index.html'">
+      ⤴︎
+    </button>
+  </span>
+
+  <!-- Bit effect always on in background -->
+  <div class="particles-container" id="particles-container"></div>
+
+  <!-- Page Content -->
+  <div class="w3-main w3-padding-large">
+    <div class="cinema-wrapper">
+
+      <div class="page-title">MY AI CINEMATIC GALLERY</div>
+
+      <main class="gallery" style="flex: 1 1 auto; min-height: 0;">
+        <div class="grid">
+
+          <!-- FILM 1 -->
+          <div class="tile" data-video="../videos/out-of-office-compressed-2026.mp4">
+            <video src="../videos/out-of-office-compressed-2026.mp4" preload="metadata" playsinline></video>
+            <h3>OUT-OF-OFFICE</h3>
+            <p>
+              <em style="display:block; text-align:center;">Reply AI Film Contest 2026</em><br>
+              A man returns to a sterile office after an impossible digital detour, where the rhythm of work dissolves into a luminous, machine-made dream.
+              <span class="tech-note">Created <strong>locally</strong> with a <strong>ComfyUI</strong> pipeline and multiple <strong>Hugging Face</strong> video models.</span>
+            </p>
+          </div>
+
+          <!-- FILM 2 -->
+          <div class="tile" data-video="../videos/gaia-compressed-2025.mp4">
+            <video src="../videos/gaia-compressed-2025.mp4" preload="metadata" playsinline></video>
+            <h3>GAIA</h3>
+            <p>
+              <em style="display:block; text-align:center;">Reply AI Film Contest 2025</em><br>
+              A lone traveler drifts through a living planet, where memory, weather, and ancient silence collapse into a fragile future.
+              <span class="tech-note">Generated with <strong>Google Veo 2</strong>, paired with a custom pipeline for music, voice, and sound design.</span>
+            </p>
+          </div>
+
+        </div>
+      </main>
+
+      <!-- CONTACT SECTION -->
+      <div class="contact-section">
+        <div class="contact-links">
+          <a href="mailto:valerioserino.info@gmail.com">Email</a> |
+          <a href="tel:+393469554008">Telefono</a> |
+          <a href="https://www.linkedin.com/in/valerioserino/" target="_blank">LinkedIn</a>
+        </div>
+        <footer>
+          Built by <strong>Valerio Serino</strong> — WCAG 2.2 compliant
+        </footer>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <video id="modal-video" controls playsinline></video>
+    </div>
+  </div>
+
+  <script src="cv_static_site_script.js"></script>
+  <script>
+    // VIDEO MODAL
+    const tiles = document.querySelectorAll(".tile");
+    const modal = document.getElementById("modal");
+    const modalVideo = document.getElementById("modal-video");
+
+    tiles.forEach(tile => {
+      tile.addEventListener("click", () => {
+        const src = tile.getAttribute("data-video");
+        modalVideo.src = src;
+        modal.style.display = "flex";
+        modalVideo.play();
+      });
+    });
+
+    modal.addEventListener("click", () => {
+      modalVideo.pause();
+      modalVideo.src = "";
+      modal.style.display = "none";
+    });
+
+    // DARK MODE TOGGLE: moon ↔ sun + theme switch
+    const toggleSpan = document.querySelector('span[onclick="toggleDarkMode()"]');
+    const toggleIcon = toggleSpan.querySelector('i');
+
+    // initial moon style
+    toggleIcon.style.color = '#FFD700';
+
+    function setTheme(isLight) {
+      if (isLight) {
+        document.body.classList.add('light-mode');
+        document.body.classList.remove('dark-mode');
+        toggleIcon.className = 'fa fa-sun-o';
+        toggleIcon.style.color = '#FFD700';
+      } else {
+        document.body.classList.remove('light-mode');
+        document.body.classList.add('dark-mode');
+        toggleIcon.className = 'fa fa-moon-o';
+        toggleIcon.style.color = '#FFD700';
+      }
+    }
+
+    let light = false;
+    function toggleDarkMode() {
+      light = !light;
+      setTheme(light);
+    }
+
+    // start in dark mode with yellow moon
+    setTheme(false);
+  </script>
+
+</body>
+
+</html>
