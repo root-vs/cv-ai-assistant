@@ -230,6 +230,59 @@ header {
     gap: 6px;
 }
 
+.contact-section {
+    position: fixed;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    width: min(90vw, 680px);
+    text-align: center;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    z-index: 3;
+    pointer-events: none;
+}
+
+.contact-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    pointer-events: auto;
+}
+
+.contact-links a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: var(--transition);
+    font-weight: 600;
+}
+
+.contact-links a:hover {
+    text-shadow: 0 0 12px rgba(0, 255, 255, 0.6);
+}
+
+.contact-section footer {
+    margin-top: 6px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+body:not(.dark-mode) .contact-section footer {
+    color: rgba(17, 24, 39, 0.72);
+}
+
+body:not(.dark-mode) .contact-section footer strong {
+    color: #111111;
+    font-weight: 700;
+}
+
+.contact-section footer strong {
+    color: var(--primary);
+    font-weight: 700;
+}
+
 /****************************************************
  * ICON BUTTONS
  ****************************************************/
