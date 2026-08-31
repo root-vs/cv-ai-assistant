@@ -5,6 +5,7 @@ Welcome to my **CV resume site**! 🚀
 ## 🌟 Features
 - 🌐 **Explore** a stunning **static** version of my resume, showcasing my skills and experiences in a visually appealing format.
 - 🤖 **Engage** with **V.E.R.A.**, an intelligent AI assistant that can answer questions about my background and expertise through a frontend experience backed by a dedicated backend service.
+- 🎬 **AI Film Studio** - Create and explore AI-generated video content showcasing my projects and expertise.
 - 📥 **Download** my polished **PDF resume** for offline viewing and sharing.
 
 ## 🛠️ Technologies Used
