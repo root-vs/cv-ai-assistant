@@ -280,15 +280,28 @@ h2 {
     }
 
     .option-btn {
-        min-width: 200px;
-        font-size: 14px;
-        padding: 12px 18px;
+        min-width: 160px;
+        font-size: 12px;
+        padding: 10px 14px;
     }
 
     /* Footer visibile e non tagliato */
     footer {
         margin-top: 40px;
         transform: scale(0.8);
+    }
+
+    .contact-section {
+        margin: -15px auto 0;
+        padding: 8px 10px;
+    }
+
+    .contact-links {
+        font-size: 13px;
+    }
+
+    .contact-links a {
+        margin: 0 5px;
     }
 }
 
@@ -309,5 +322,58 @@ h2 {
 
     50% {
         opacity: 0;
+    }
+}
+
+/****************************************
+ *  CONTACT SECTION
+ ****************************************/
+
+.contact-section {
+    margin: -40px auto 5px;
+    padding: 10px 20px;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+.contact-links {
+    font-size: 16px;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.contact-links a {
+    color: #0088cc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    margin: 0 8px;
+}
+
+.contact-links a:hover {
+    color: #00aadd;
+    text-decoration: underline;
+}
+
+.dark-mode .contact-links a {
+    color: #00bbff;
+}
+
+.dark-mode .contact-links a:hover {
+    color: #00ddff;
+}
+
+@media (max-width: 600px) {
+    .contact-section {
+        margin: -25px auto 0;
+        padding: 8px 10px;
+    }
+
+    .contact-links {
+        font-size: 13px;
+    }
+
+    .contact-links a {
+        margin: 0 5px;
     }
 }

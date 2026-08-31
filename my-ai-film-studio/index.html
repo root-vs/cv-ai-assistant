@@ -29,7 +29,7 @@
     body {
       margin: 0;
       height: 100%;
-      overflow: hidden;
+      overflow: auto;
       background: var(--back);
       font-family: 'Orbitron', sans-serif;
       color: #fff;
@@ -59,7 +59,7 @@
 
     /* PAGE WRAPPER TO KEEP EVERYTHING CENTERED */
     .cinema-wrapper {
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -83,10 +83,11 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 0 20px;
+      padding: 20px 20px;
       flex: 1 1 auto;
       min-height: 0;
       width: 100%;
+      overflow-y: auto;
     }
 
     .grid {
@@ -208,25 +209,148 @@
       border-radius: 12px;
       box-shadow: none;
     }
+
+    /* RESPONSIVE DESIGN */
+    .theme-toggle-cinema {
+      width: auto;
+      left: 0;
+      background-color: transparent !important;
+    }
+
+    .top-right-btns-cinema {
+      width: auto;
+      right: 0;
+      background-color: transparent !important;
+    }
+
+    .gallery {
+      flex: 1 1 auto;
+    }
+
+    .film-subtitle {
+      display: block;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .cinema-wrapper {
+        padding: 20px 15px 10px;
+      }
+
+      .page-title {
+        font-size: clamp(20px, 3vw, 32px);
+        margin-bottom: 20px;
+      }
+
+      .grid {
+        gap: 20px;
+        max-width: 100%;
+      }
+
+      .tile {
+        width: clamp(200px, 90vw, 320px);
+      }
+
+      .tile h3 {
+        font-size: 18px;
+      }
+
+      .tile p {
+        font-size: 15px;
+      }
+
+      .tile .tech-note {
+        font-size: 12px;
+      }
+
+      .contact-section {
+        padding-bottom: 10px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .cinema-wrapper {
+        padding: 15px 10px 8px;
+        min-height: 0;
+      }
+
+      .page-title {
+        font-size: clamp(16px, 2.5vw, 24px);
+        margin-bottom: 15px;
+      }
+
+      .grid {
+        gap: 15px;
+      }
+
+      .tile {
+        width: 100%;
+        max-width: 280px;
+        padding: 10px;
+      }
+
+      .tile video {
+        aspect-ratio: 16/9;
+        margin-bottom: 8px;
+      }
+
+      .tile h3 {
+        font-size: 16px;
+      }
+
+      .tile p {
+        font-size: 13px;
+      }
+
+      .tile .tech-note {
+        font-size: 11px;
+      }
+
+      .contact-section {
+        font-size: 12px;
+        padding-bottom: 8px;
+        transform: translateY(-4px);
+      }
+
+      .contact-links a {
+        margin: 0 6px;
+      }
+
+      footer {
+        font-size: 10px;
+        margin-top: 4px;
+      }
+    }
+
+    @media (min-width: 769px) {
+      html,
+      body {
+        overflow: hidden;
+      }
+
+      .cinema-wrapper {
+        height: 100vh;
+      }
+
+      .gallery {
+        min-height: 0;
+        overflow-y: hidden;
+      }
+    }
   </style>
 </head>
 
 <body>
 
   <!-- Dark mode toggle (same markup as CV page) -->
-  <span class="w3-button w3-top w3-white w3-xlarge w3-text-grey w3-hover-text-black"
-    style="width:auto;left:0;background-color: transparent !important" onclick="toggleDarkMode()">
+  <span class="w3-button w3-top w3-white w3-xlarge w3-text-grey w3-hover-text-black theme-toggle-cinema" onclick="toggleDarkMode()">
     <i class="fa fa-moon-o"></i>
   </span>
 
   <!-- Top right buttons (Home + Back to top) -->
-  <span class="w3-top w3-xlarge top-right-btns" style="width:auto;right:0;background-color: transparent !important">
+  <span class="w3-top w3-xlarge top-right-btns-cinema">
     <button class="w3-button mode-aware-btn" title="Home" onclick="window.location.href='../index.html'">
       🏠︎
-    </button>
-
-    <button class="w3-button mode-aware-btn" title="Return to home" onclick="window.location.href='../index.html'">
-      ⤴︎
     </button>
   </span>
 
@@ -237,17 +361,17 @@
   <div class="w3-main w3-padding-large">
     <div class="cinema-wrapper">
 
-      <div class="page-title">MY AI CINEMATIC GALLERY</div>
+      <div class="page-title">MY AI CINEMA</div>
 
-      <main class="gallery" style="flex: 1 1 auto; min-height: 0;">
+      <main class="gallery">
         <div class="grid">
 
           <!-- FILM 1 -->
           <div class="tile" data-video="../videos/out-of-office-compressed-2026.mp4">
-            <video src="../videos/out-of-office-compressed-2026.mp4" preload="metadata" playsinline></video>
+            <video src="../videos/out-of-office-compressed-2026.mp4" preload="metadata"></video>
             <h3>OUT-OF-OFFICE</h3>
             <p>
-              <em style="display:block; text-align:center;">Reply AI Film Contest 2026</em><br>
+              <em class="film-subtitle">Reply AI Film Contest 2026</em><br>
               A man returns to a sterile office after an impossible digital detour, where the rhythm of work dissolves into a luminous, machine-made dream.
               <span class="tech-note">Created <strong>locally</strong> with a <strong>ComfyUI</strong> pipeline and multiple <strong>Hugging Face</strong> video models.</span>
             </p>
@@ -255,10 +379,10 @@
 
           <!-- FILM 2 -->
           <div class="tile" data-video="../videos/gaia-compressed-2025.mp4">
-            <video src="../videos/gaia-compressed-2025.mp4" preload="metadata" playsinline></video>
+            <video src="../videos/gaia-compressed-2025.mp4" preload="metadata"></video>
             <h3>GAIA</h3>
             <p>
-              <em style="display:block; text-align:center;">Reply AI Film Contest 2025</em><br>
+              <em class="film-subtitle">Reply AI Film Contest 2025</em><br>
               A lone traveler drifts through a living planet, where memory, weather, and ancient silence collapse into a fragile future.
               <span class="tech-note">Generated with <strong>Google Veo 2</strong>, paired with a custom pipeline for music, voice, and sound design.</span>
             </p>
@@ -272,7 +396,7 @@
         <div class="contact-links">
           <a href="mailto:valerioserino.info@gmail.com">Email</a> |
           <a href="tel:+393469554008">Telefono</a> |
-          <a href="https://www.linkedin.com/in/valerioserino/" target="_blank">LinkedIn</a>
+          <a href="https://www.linkedin.com/in/valerioserino/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </div>
         <footer>
           Built by <strong>Valerio Serino</strong> — WCAG 2.2 compliant
@@ -285,7 +409,7 @@
   <!-- MODAL -->
   <div id="modal" class="modal">
     <div class="modal-content">
-      <video id="modal-video" controls playsinline></video>
+      <video id="modal-video" controls></video>
     </div>
   </div>
 
